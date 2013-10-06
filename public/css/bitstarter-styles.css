@@ -2,24 +2,33 @@
      Resource interpreted as Font but transferred with MIME type font/woff: 
      "https://themes.googleusercontent.com/static/fonts/ubuntu/v4/0ihfXUL2emPh0ROJezvraLO3LdcAZYWl9Si6vvxL-qU.woff".
 */
+
+/*
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 300;
   src: local('Open Sans Light'), local('OpenSans-Light'), url(../fonts/opensans-300.woff) format('woff');
 }
+*/
+
+/*
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: 300;
   src: local('Ubuntu Light'), local('Ubuntu-Light'), url(../fonts/ubuntu-300.woff) format('woff');
 }
+*/
+
+/*
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: 700;
   src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(../fonts/ubuntu-700.woff) format('woff');
 }
+*/
 
 /* Large desktop */
 @media (min-width: 980px) { 
@@ -58,23 +67,48 @@
 */
 body{
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-weight: 300; 
+  font-size: 100%;
+  /*font-weight: 300;*/ 
+}
+.inward-shadow {
+    box-shadow: inset 0 5px 15px rgba(0,0,0,.3), inset 0 -5px 15px rgba(0,0,0,.3);
+    -webkit-box-shadow: inset 0 5px 15px rgba(0,0,0,.3), inset 0 -5px 15px rgba(0,0,0,.3);
+    -moz-box-shadow: inset 0 5px 15px rgba(0,0,0,.3), inset 0 -5px 15px rgba(0,0,0,.3);
+    -khtml-box-shadow: inset 0 5px 15px rgba(0,0,0,.3), inset 0 -5px 15px rgba(0,0,0,.3);
+    -ms-box-shadow: inset 0 5px 15px rgba(0,0,0,.3), inset 0 -5px 15px rgba(0,0,0,.3);
+    -o-box-shadow: inset 0 5px 15px rgba(0,0,0,.3), inset 0 -5px 15px rgba(0,0,0,.3);
+}
+.single-outward-shadow {
+    box-shadow: 0 -5px 15px rgba(0,0,0,.3);
+    -webkit-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
+    -khtml-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
+    -ms-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
+    -o-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
 }
 .heading, .subheading {
   font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
   text-align: center;
 }
 .subheading {
-  font-weight: 300;
+  /* font-weight: 300; */
+}
+h1 { 
+  font-size: 2.75em; 
+  line-height: 1.5em; 
 }
 p.lead {
-  padding-top: 1.5%;
-  font-size: 24px;
-  line-height: 30px;
+  padding-bottom: 1%;
+  font-size: 1.71em;
+  line-height: 1.5em;
+}
+p.remark {
+  color: #7F7F7F; 
+  font-style: italic; 
 }
 p {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 1.15em;
+  line-height: 1.65em;
 }
 
 /* Video pitch and Action */
@@ -86,7 +120,7 @@ p {
 }
 .actions {
   background-color: #343434;
-  padding: 3% 0%;
+  padding: 2.6% 0%;
 }
 .video, .thermometer, .order, .social, .statistics {
   text-align: center;
@@ -102,22 +136,22 @@ p {
 
 /* Marketing Copy and Footer */
 .copy {
-  padding-top: 2.5%;
+  /* padding-top: 2.5%; */
   padding-bottom: 2.5%;
   text-align: justify;
 }
 .asset {
-  padding: 2.5% 0%;
+  padding: 0% 0% 2.5% 0%;
 }
 .footer {
-  color: #cccccc;
+  color: #b2b2b2;
   text-align: center;
 }
 .footer p {
-  font-size: 11px;
+  font-size: 0.78em;
 }
 .footer a {
-  color: #ccccff;
+  color: #b8b8e5;
 }
 
 /* http://support.addthis.com/customer/portal/questions/1136093-share-buttons-in-center-position */      

@@ -22,15 +22,15 @@
 */
 var Constants = {
   APP_NAME: "Bitstarter", 
-  FUNDING_TARGET: 10.00,
+  FUNDING_TARGET: 40.00,
   FUNDING_UNIT_SYMBOL: "mBTC",
   FUNDING_SI_SCALE: 1000,
-  FUNDING_END_DATE: new Date("September 8, 2013"),
-  PRODUCT_NAME: "Product: Development Version",
-  PRODUCT_SHORT_DESCRIPTION: "One sentence description.",
+  FUNDING_END_DATE: new Date("November 1, 2013"),
+  PRODUCT_NAME: "FanBooker: Development Version",
+  PRODUCT_SHORT_DESCRIPTION: "Covering cultural deficits through crowdfunding.",
   TWITTER_USERNAME: "nodejs",
   TWITTER_TWEET: "This student crowdfunder looks interesting.",
-  COINBASE_PREORDER_DATA_CODE: "13b56883764b54e6ab56fef3bcc7229c",
+  COINBASE_PREORDER_DATA_CODE: "45fd1721dbb05c496707ea9cf68d39c4",
   days_left: function() {
       return Math.max(Math.ceil((this.FUNDING_END_DATE - new Date()) / (1000*60*60*24)), 0);
   }
