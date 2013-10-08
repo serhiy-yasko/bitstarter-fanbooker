@@ -156,6 +156,6 @@ p {
 
 /* http://support.addthis.com/customer/portal/questions/1136093-share-buttons-in-center-position */      
 div.addthis_toolbox {
-width: 174px;
-margin: 0 auto;
+width: 244px;
+/* margin: 0 auto; */
 }

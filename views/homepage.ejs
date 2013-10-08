@@ -122,9 +122,12 @@
           <div class="span9 offset3 social">
             <!-- AddThis Button BEGIN -->
             <div class="addthis_toolbox addthis_default_style">
-               <a class="addthis_button_tweet" tw:via="<%= twitter_username %>" tw:text="<%= twitter_tweet %>"></a>
-            </div>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-5214a5fe5dbdc2b4"></script>
+	      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	      <a class="addthis_button_tweet" tw:via="<%= twitter_username %>" tw:text="<%= twitter_tweet %>"></a>
+	      <a class="addthis_counter addthis_pill_style"></a>
+	    </div>
+	    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+	    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5207ab8a4c39f160"></script>
             <!-- AddThis Button END -->
           </div>
           </div>
@@ -203,14 +206,16 @@
       </div>
     </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-43108466-1', 'bitstarter-fanbooker.herokuapp.com');
+      ga('send', 'pageview');
+      
+    </script>
 
-  ga('create', 'UA-43108466-1', 'herokuapp.com');
-  ga('send', 'pageview');
-</script>
   </body>
 </html>
