@@ -7,11 +7,13 @@ echo -e "\n\nNOW ENTER YOUR HEROKU PASSWORD"
 # - devcenter.heroku.com/articles/config-vars
 # - devcenter.heroku.com/articles/heroku-postgresql
 heroku login
-heroku create
+# heroku create
 ssh-keygen -t rsa
 heroku keys:add
-heroku addons:add heroku-postgresql:dev
-heroku pg:promote `heroku config  | grep HEROKU_POSTGRESQL | cut -f1 -d':'`
+heroku addons:add heroku-postgresql:dev --app bitstarter-fanbooker-stage
+heroku addons:add heroku-postgresql:dev --app bitstarter-fanbooker
+heroku pg:promote `heroku config --app bitstarter-fanbooker-stage | grep HEROKU_POSTGRESQL | cut -f1 -d':'` --app bitstarter-fanbooker-stage
+heroku pg:promote `heroku config --app bitstarter-fanbooker | grep HEROKU_POSTGRESQL | cut -f1 -d':'` --app bitstarter-fanbooker
 heroku plugins:install git://github.com/ddollar/heroku-config.git
 
 # Set up heroku configuration variables
