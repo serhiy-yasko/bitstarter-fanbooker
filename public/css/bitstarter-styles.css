@@ -43,6 +43,14 @@
  }
 }
 
+/* Tablets */
+@media (max-width: 979px) and (min-width: 768px) {
+    iframe#coinbase_button_iframe_45fd1721dbb05c496707ea9cf68d39c4 {
+	margin-left: -32%;
+    }
+
+}
+
 /* Landscape phones and down */
 @media (max-width: 480px) { 
  .copy {
@@ -66,8 +74,8 @@
   Also use slightly lighter subheading (Ubuntu 300 vs. 400)
 */
 body{
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  font-size: 100%;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 100%;
   /*font-weight: 300;*/ 
 }
 .inward-shadow {
@@ -86,12 +94,37 @@ body{
     -ms-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
     -o-box-shadow: 0 -5px 15px rgba(0,0,0,.3);
 }
+.bottom-edge-shadow {
+    box-shadow: 0 3px 6px rgba(50, 50, 50, .75);
+    -webkit-box-shadow: 0 3px 6px rgba(50, 50, 50, .75);
+    -moz-box-shadow: 0 3px 6px rgba(50, 50, 50, .75);
+    -khtml-box-shadow: 0 3px 6px rgba(50, 50, 50, .75);
+    -ms-box-shadow: 0 3px 6px rgba(50, 50, 50, .75);
+    -o-box-shadow: 0 3px 6px rgba(50, 50, 50, .75);
+}
+.top-edge-shadow {
+    box-shadow: 0 -3px 6px rgba(50, 50, 50, .75);
+    -webkit-box-shadow: 0 -3px 6px rgba(50, 50, 50, .75);
+    -moz-box-shadow: 0 -3px 6px rgba(50, 50, 50, .75);
+    -khtml-box-shadow: 0 -3px 6px rgba(50, 50, 50, .75);
+    -ms-box-shadow: 0 -3px 6px rgba(50, 50, 50, .75);
+    -o-box-shadow: 0 -3px 6px rgba(50, 50, 50, .75);
+}
+.navbar-fixed-top {
+    margin-bottom: 0;
+}
 .heading, .subheading {
   font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
   text-align: center;
 }
 .subheading {
   /* font-weight: 300; */
+}
+div.divider-stripe {
+    padding: .8% 0%;
+    background-image: linear-gradient(to bottom, #222222, #111111);
+    background-repeat: repeat-x;
+    border-color: #252525;
 }
 h1 { 
   font-size: 2.75em; 
@@ -156,6 +189,6 @@ p {
 
 /* http://support.addthis.com/customer/portal/questions/1136093-share-buttons-in-center-position */      
 div.addthis_toolbox {
-width: 244px;
-/* margin: 0 auto; */
+    width: 100%;
+    margin: 0 auto;
 }
