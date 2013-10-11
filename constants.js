@@ -29,7 +29,7 @@ var Constants = {
   PRODUCT_NAME: "FanBooker: Development Version",
   PRODUCT_SHORT_DESCRIPTION: "Covering cultural deficits through crowdfunding.",
   TWITTER_USERNAME: "nodejs",
-  TWITTER_TWEET: "This student crowdfunder looks interesting.",
+  TWITTER_TWEET: "This crowdfunder looks interesting.",
   COINBASE_PREORDER_DATA_CODE: "45fd1721dbb05c496707ea9cf68d39c4",
   days_left: function() {
       return Math.max(Math.ceil((this.FUNDING_END_DATE - new Date()) / (1000*60*60*24)), 0);

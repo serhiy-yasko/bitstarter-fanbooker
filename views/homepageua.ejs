@@ -20,8 +20,7 @@
   </head>
   <body>
 
-    <!-- Mobile-friendly navbar adapted from example. -->
-    <!-- http://twitter.github.io/bootstrap/examples/starter-template.html -->
+    <!-- Navigation Bar -->
     <div class="navbar navbar-inverse navbar-fixed-top bottom-edge-shadow">
       <div class="navbar-inner">
         <div class="container">
@@ -44,14 +43,8 @@
         </div>
       </div>
     </div>
-
-    <!-- We use row-fluid inside containers to achieve a resizable layout. -->
-    <!-- blogs.endjin.com/2013/04/tips-for-implementing-responsive-designs-using-bootstrap/ -->
-    <!-- http://stackoverflow.com/a/12270322 -->
     
-      <!-- Font and paired font of .heading/.subheading and body from Google Fonts -->
-      <!-- www.google.com/fonts/specimen/Ubuntu -->
-      <!-- www.google.com/fonts/specimen/Ubuntu#pairings -->
+      <!-- Header -->
       <div class="jumbotron divider-stripe top-edge-shadow"></div>
       <div class="jumbotron" id="header-area">
 	<div class="container">
@@ -62,21 +55,18 @@
           </div> <!-- end of heading -->
           <div class="row-fluid subheading">
             <div class="span12">
-              <!-- Special typography from Bootstrap for lead paragraph. -->
-              <!-- http://twitter.github.io/bootstrap/base-css.html#typography -->
               <p class="lead"><%= product_short_description %></p>
             </div>
           </div> <!-- end of subheading -->
 	</div> <!-- end of container -->
       </div> <!-- end of jumbotron --> 
       <div class="jumbotron divider-stripe bottom-edge-shadow"></div>
+      
       <div class="container">
 	<div class="row-fluid pitch">
           <div class="span5 offset1 video">
             <img class="img-polaroid" alt="Crowd before a stage" src="img/img1.jpg">
           </div>
-
-          <!-- We define a new 'actions' div to contain statistics, order, and share buttons.-->
           <div class="span5 actions" ng-controller="OrdersCtrl">
             <div class="row-fluid">
               <div class="span8 offset2">
@@ -209,7 +199,7 @@
       <!-- http://creativecommons.org/licenses/ -->
       <div class="row-fluid footer">
         <div class="span12">
-	  <p>This work is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC By-SA 3.0</a>. Using images by Flickr users: alexsunshine, sam_ong, bigcrow. As well as a background fragment by <a href="http://exoteric.roach.org/" target="_blank">Blatte</a>.</p>
+	  <p>This work is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC By-SA 3.0</a>. Using images by Flickr users: alexsunshine, sam_ong, bigcrow.</p>
         </div>
       </div>
     </div>

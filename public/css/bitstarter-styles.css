@@ -121,12 +121,14 @@ body{
   /* font-weight: 300; */
 }
 div#header-area, .actions {
+    margin: 0 0;
     background-image: url("../img/holydark-bg-tile.png"); 
     background-repeat: repeat; 
     background-color: #272D39;
     background-clip: padding-box;
 }
 div.divider-stripe {
+    margin: 0 0;
     padding: .8% 0%;
     background: #383838;
     background: -moz-linear-gradient(top, #111111 0%, #232833 100%);
@@ -168,8 +170,8 @@ p {
   padding: 2% 0%;
 }
 .actions {
-  /* background-color: #343434; */
-    border: 4px solid #272D39;
+  /* background-color: #343434;
+    border: 4px solid #272D39; */
     padding: 2.6% 0%;
 }
 .video, .thermometer, .order, .social, .statistics {
