@@ -1,9 +1,31 @@
-<% include header.ejs %>    
-
+<!DOCTYPE html>
+<html lang="en" ng-app>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d396qusza40orc.cloudfront.net/startup/code/jquery.js"></script>
+    <script src="https://d396qusza40orc.cloudfront.net/startup/code/bootstrap.js"></script>
+    <script src="js/angular.min.js" ></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/google-analytics.js"></script>
+    <script src="https://coinbase.com/assets/button.js"></script>
+    <script src="js/coinbase-post-payment.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,300,400,600,700,800" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://d396qusza40orc.cloudfront.net/startup%2Fcode%2Fbootstrap-combined.no-icons.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+    <link rel="stylesheet" href="https://d396qusza40orc.cloudfront.net/startup%2Fcode%2Fsocial-buttons.css">
+    <link rel="stylesheet" href="css/bitstarter-styles.css">
+  </head>
+  <body>
+    
+    <% include navbar.ejs %>
+    
     <div class="container">
-      <h2>Contact Email</h2>
-      <p>If you have any inquiries or suggestions, feel free to drop us a line:</p>
-      <p><a href="mailto:fanbookerhatestogetspam@outlook.com" onclick="this.href=this.href.replace(/hatestogetspam/,'')"></p>
+      <h2>Contact Email</h2><hr>
+      <p>If you have any inquiries or suggestions, feel free to <a href="mailto:fanbookerhatestogetspam@outlook.com" onclick="this.href=this.href.replace(/hatestogetspam/,'')">drop us a line</a></p>
+      <p class="remark">Якщо ви маєте запитання чи пропозиції, <a href="mailto:fanbookerhatestogetspam@outlook.com" onclick="this.href=this.href.replace(/hatestogetspam/,'')">напишіть нам</a></p>
     </div>
-
-<% include footer.ejs %>
+  </body>
+</html>
