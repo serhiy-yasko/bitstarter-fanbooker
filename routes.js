@@ -71,7 +71,9 @@ var orderfn = function(request, response) {
 };
 
 var contactfn = function(request, response) {
-    response.send("contactpage");
+    response.render("contactpage", {
+	title: "Contact",
+	name: Constants.APP_NAME});
 };
 
 var api_orderfn = function(request, response) {
