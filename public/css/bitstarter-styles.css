@@ -141,7 +141,7 @@ div.divider-stripe {
     background-repeat: repeat-x;
     border-color: #252525;
 }
-h1, p.lead {
+h1, p.lead, div#gig-caption {
     color: white;
 }
 h1 { 
@@ -153,7 +153,7 @@ p.lead {
   font-size: 1.71em;
   line-height: 1.5em;
 }
-p.remark {
+.remark {
   color: #7F7F7F; 
   font-style: italic; 
 }
@@ -184,9 +184,30 @@ p {
   font-size: 100%;
   line-height: 1;
 }
-
-
+.gig-poster {
+    position: relative;
+}
+div#gig-caption {
+    position: absolute;
+    top: 6%;
+    left: 4%;
+    background-color: rgba(39,45,57,.5);
+    line-height: 1.5em;
+    padding: .6% 3%;
+}
+#gig-caption-agency {
+  font-size: .75em;
+}
+#gig-caption-band {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+#gig-caption-info {
+  font-size: 1em;
+}
+    
 /* Marketing Copy and Footer */
+
 .copy {
   /* padding-top: 2.5%; */
   padding-bottom: 2.5%;

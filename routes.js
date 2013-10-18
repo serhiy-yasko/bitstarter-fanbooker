@@ -50,24 +50,34 @@ var indexfn = function(request, response) {
     });
 };
 
-var ukrainianfn = function(request, response) {
-    response.render("homepageua", {
+var aboutfn = function(request, response) {
+    response.render("aboutpage", {
 	name: Constants.APP_NAME,
-	title: Constants.APP_NAME,
-	product_name: Constants.PRODUCT_NAME,
-	twitter_username: Constants.TWITTER_USERNAME,
-	twitter_tweet: Constants.TWITTER_TWEET,
-	product_short_description: Constants.PRODUCT_SHORT_DESCRIPTION,
-	coinbase_preorder_data_code: Constants.COINBASE_PREORDER_DATA_CODE
+	title: "About",
+	product_name: Constants.PRODUCT_NAME
     });
 };
 
 var orderfn = function(request, response) {
     var successcb = function(orders_json) {
-	response.render("orderpage", {orders: orders_json});
+	response.render("orderpage", {
+	    orders: orders_json 
+	});
     };
     var errcb = build_errfn('error retrieving orders', response);
     global.db.Order.allToJSON(successcb, errcb);
+};
+
+var agenciesfn = function(request, response) {
+    response.render("agenciespage", {
+	title: "Promo Agencies",
+	name: Constants.APP_NAME});
+};
+
+var venuesfn = function(request, response) {
+    response.render("venuespage", {
+	title: "Venues & Clubs",
+	name: Constants.APP_NAME});
 };
 
 var contactfn = function(request, response) {
@@ -128,9 +138,11 @@ var define_routes = function(dict) {
 
 var ROUTES = define_routes({
     '/': indexfn,
+    '/about': aboutfn,
     '/orders': orderfn,
+    '/agencies': agenciesfn,
+    '/venues': venuesfn,
     '/contact': contactfn,
-    '/ua': ukrainianfn,
     '/api/orders': api_orderfn,
     '/refresh_orders': refresh_orderfn
 });
