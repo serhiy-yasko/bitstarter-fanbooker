@@ -120,11 +120,11 @@ body{
 .subheading {
   /* font-weight: 300; */
 }
-div#header-area, .actions {
+div#header-area, .actions, h2 {
     margin: 0 0;
-    background-image: url("../img/holydark-bg-tile.png"); 
-    background-repeat: repeat; 
-    background-color: #272D39;
+    /* background-image: url("../img/holydark-bg-tile.png"); 
+    background-repeat: repeat; */ 
+    background-color: rgba(39,45,57,.7); /* #272D39 */
     background-clip: padding-box;
 }
 div.divider-stripe {
@@ -141,17 +141,19 @@ div.divider-stripe {
     background-repeat: repeat-x;
     border-color: #252525;
 }
-h1, p.lead, div#gig-caption {
+h1, h2, p.lead, div#gig-caption {
     color: white;
 }
 h1 { 
-  font-size: 2.75em; 
-  line-height: 1.5em; 
+    font-size: 2.75em; 
+    line-height: 1.5em; 
+}
+h2 {
+    padding: .5% 1%;
 }
 p.lead {
-  padding-bottom: 1%;
-  font-size: 1.71em;
-  line-height: 1.5em;
+    font-size: 1.71em;
+    line-height: 1.5em;
 }
 .remark {
   color: #7F7F7F; 
@@ -160,6 +162,19 @@ p.lead {
 p {
   font-size: 1.15em;
   line-height: 1.65em;
+}
+div#home-bg {
+    background-image: url("../img/home-bg-1.jpg");
+    transform: translate3d(0px, 0px, 0px);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    bottom: 0px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: -1;
 }
 
 /* Video pitch and Action */
