@@ -23,30 +23,37 @@
     <% include navbar.ejs %>
     
     <div class="container">
-      <h2>Send A Message</h2><hr>
-      <div id="contact-form">
+      <h2>Register</h2><hr>
+      <div id="register-form">
 	<form>
-	  <div class="form-alerts"></div>
-	  <div class="form-group ">
-	    <label class="control-label">Your Name:</label>
-	    <input class="form-control" type="text" value="" name="name">
-	    <span class="help-block"></span>
-	  </div>
-	  <div class="form-group ">
-	    <label class="control-label">Your Email:</label>
-	    <input class="form-control" type="text" value="" name="email">
-	    <span class="help-block"></span>
-	  </div>
-	  <div class="form-group ">
-	    <label class="control-label">Message:</label>
-	    <textarea class="form-control" rows="5" name="message"></textarea>
+	  <div id="form-alerts"></div>
+	  <div class="form-group">
+	    <label class="control-label">Pick a Username:</label>
+	    <input class="form-control" type="text" value="" name="username">
 	    <span class="help-block"></span>
 	  </div>
 	  <div class="form-group">
-	    <button class="btn btn-primary btn-contact" type="button">Send Message</button>
+	    <label class="control-label">Enter Your Email:</label>
+	    <input class="form-control" type="text" value="" name="email">
+	    <span class="help-block"></span>
+	  </div>
+	  <div class="form-group">
+	    <label class="control-label">Create a Password:</label>
+	    <input class="form-control" type="password" value="" name="password">
+	    <span class="help-block"></span>
+	  </div>
+	  <div class="form-group">
+	    <button class="btn btn-primary btn-register" type="button">Create My Account</button>
 	  </div>
 	</form>
-      </div> <!-- end of contact-form -->
+      </div> <!-- end of register-form -->
+      <hr>
+      <p>Or sign up using...</p>
+      <div>
+	<a href="/register/twitter">Twitter</a>
+	<a href="/register/facebook">Facebook</a>
+	<a href="/register/github">GitHub</a>
+      </div>
     </div> <!-- end of container -->
   </body>
 </html>
