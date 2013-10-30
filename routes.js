@@ -117,6 +117,29 @@ var refresh_orderfn = function(request, response) {
     global.db.Order.refreshFromCoinbase(cb);
 };
 
+/*
+var register_new_userfn = function(request, response) {
+    
+};
+
+var register_loginfn = function(request, response) {
+    passport.authenticate('local', { successRedirect: '/',
+				     failureRedirect: '/register',
+				     failureFlash: true });
+};
+
+var register_via_googlefn = function(request, response) {
+    
+};
+
+var register_via_twitterfn = function(request, response) {
+    
+};
+
+var register_via_facebookfn = function(request, response) {
+    
+};
+*/
 
 /*
    Helper functions which create a ROUTES array for export and use by web.js
@@ -151,7 +174,12 @@ var ROUTES = define_routes({
     '/register': registerfn,
     '/contact': contactfn,
     '/api/orders': api_orderfn,
-    '/refresh_orders': refresh_orderfn
+    '/refresh_orders': refresh_orderfn,
+    '/register/new_user': register_new_userfn,
+    '/register/login': register_loginfn,
+    '/register/google': register_via_googlefn,
+    '/register/twitter': register_via_twitterfn,
+    '/register/facebook': register_via_facebookfn
 });
 
 module.exports = ROUTES;

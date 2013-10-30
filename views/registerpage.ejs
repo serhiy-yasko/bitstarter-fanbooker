@@ -24,35 +24,67 @@
     
     <div class="container">
       <h2>Register</h2><hr>
-      <div id="register-form">
-	<form>
-	  <div id="form-alerts"></div>
-	  <div class="form-group">
-	    <label class="control-label">Pick a Username:</label>
-	    <input class="form-control" type="text" value="" name="username">
-	    <span class="help-block"></span>
-	  </div>
-	  <div class="form-group">
-	    <label class="control-label">Enter Your Email:</label>
-	    <input class="form-control" type="text" value="" name="email">
-	    <span class="help-block"></span>
-	  </div>
-	  <div class="form-group">
-	    <label class="control-label">Create a Password:</label>
-	    <input class="form-control" type="password" value="" name="password">
-	    <span class="help-block"></span>
-	  </div>
-	  <div class="form-group">
-	    <button class="btn btn-primary btn-register" type="button">Create My Account</button>
-	  </div>
-	</form>
-      </div> <!-- end of register-form -->
-      <hr>
-      <p>Or sign up using...</p>
-      <div>
-	<a href="/register/twitter">Twitter</a>
-	<a href="/register/facebook">Facebook</a>
-	<a href="/register/github">GitHub</a>
+      <div class="span5 offset1 register-new-user">
+	<div id="register-form">
+	  <form action="/register/new_user" method="post">
+	    <div id="form-alerts"></div>
+	    <div class="form-group">
+	      <label class="control-label">Pick a Username:</label>
+	      <input class="form-control" type="text" value="" name="username">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label">Enter Your First Name:</label>
+	      <input class="form-control" type="text" value="" name="firstname">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label">Enter Your Last Name:</label>
+	      <input class="form-control" type="text" value="" name="lastname">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label">Enter Your Email:</label>
+	      <input class="form-control" type="text" value="" name="email">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label">Create a Password:</label>
+	      <input class="form-control" type="password" value="" name="password">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <button class="btn btn-primary btn-register" type="button">Create My Account</button>
+	    </div>
+	  </form>
+	</div> <!-- end of register-form -->
+	<hr>
+	<p>Or sign up using...</p>
+	<div>
+	  <a href="/register/google">Google</a>
+	  <a href="/register/twitter">Twitter</a>
+	  <a href="/register/facebook">Facebook</a>
+	</div>
+      </div> <!-- end of span5 -->
+      <div class="span5 login">
+	<div id="login-form">
+	  <form action="/register/login" method="post">
+	    <div id="form-alerts"></div>
+	    <div class="form-group">
+	      <label class="control-label">Your Username:</label>
+	      <input class="form-control" type="text" value="" name="username">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <label class="control-label">Your Password:</label>
+	      <input class="form-control" type="password" value="" name="password">
+	      <span class="help-block"></span>
+	    </div>
+	    <div class="form-group">
+	      <button class="btn btn-primary btn-login" type="button">Come On In!</button>
+	    </div>
+	  </form>
+	</div> <!-- end of login-form -->
       </div>
     </div> <!-- end of container -->
   </body>

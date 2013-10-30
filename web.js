@@ -5,6 +5,9 @@ var express = require('express')
   , db      = require('./models')
   , ROUTES  = require('./routes');
 
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
+
 /*
   Initialize the Express app, the E in the MEAN stack (from mean.io).
 
@@ -77,6 +80,39 @@ var express = require('express')
   for requests while the daemon is working in the background on a periodic
   schedule.
 */
+
+// Passport session setup
+passport.serializeUser(function(user, done) {
+    done(null, user._id);
+});
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+	done(err, user);
+    });
+});
+
+// Use the Local Strategy within Passport
+passport.use(new LocalStrategy(function (username, password, done) {
+    User.findOne({ username: username }, function(err, user) {
+	if (err) {
+	    return done(err);
+	}
+	if (!user) {
+	    return done(null, false, { message: 'Unknown user: ' + username});
+	}
+	user.comparePassword(password, function(err, isMatch) {
+	    if (err) {
+		return done(err);
+	    }
+	    if (isMatch) {
+		return done(null, user);
+	    } else {
+		return done(null, false, { message: 'Invalid Password' });
+	    }
+	});
+    });
+}));
+
 var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -84,6 +120,12 @@ app.set('port', process.env.PORT || 8080);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon.ico')));
 app.use(express.logger("dev"));
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+// app.use(express.methodOverride());
+app.use(express.session({ secret: 'terces' }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 for(var ii in ROUTES) {
     app.get(ROUTES[ii].path, ROUTES[ii].fn);
