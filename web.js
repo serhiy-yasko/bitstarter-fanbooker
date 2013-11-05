@@ -2,11 +2,11 @@ var express = require('express')
   , http    = require('http')
   , path    = require('path')
   , async   = require('async')
+  , passport = require('passport')
+  , // LocalStrategy = require('passport-local').Strategy
+  , GoogleStrategy = require('passport-google').Strategy
   , db      = require('./models')
   , ROUTES  = require('./routes');
-
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
 
 /*
   Initialize the Express app, the E in the MEAN stack (from mean.io).
@@ -83,15 +83,13 @@ var passport = require('passport')
 
 // Passport session setup
 passport.serializeUser(function(user, done) {
-    done(null, user._id);
+    done(null, user);
 });
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-	done(err, user);
-    });
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
 });
 
-// Use the Local Strategy within Passport
+/* Use the Local Strategy within Passport
 passport.use(new LocalStrategy(function (username, password, done) {
     User.findOne({ username: username }, function(err, user) {
 	if (err) {
@@ -112,6 +110,27 @@ passport.use(new LocalStrategy(function (username, password, done) {
 	});
     });
 }));
+*/
+
+// Use the GoogleStrategy within Passport
+passport.use(new GoogleStrategy({
+    returnURL: 'http://ec2-54-200-242-232.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-200-242-232.us-west-2.compute.amazonaws.com:8080/'
+  },
+  function(identifier, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      
+      // To keep the example simple, the user's Google profile is returned to
+      // represent the logged-in user. In a typical application, you would want
+      // to associate the Google account with a user record in your database,
+      // and return that user instead.
+      profile.identifier = identifier;
+      return done(null, profile);
+    });
+  }
+));
+
 
 var app = express();
 app.set('views', __dirname + '/views');
@@ -122,7 +141,7 @@ app.use(express.favicon(path.join(__dirname, 'public/img/favicon.ico')));
 app.use(express.logger("dev"));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
-// app.use(express.methodOverride());
+app.use(express.methodOverride());
 app.use(express.session({ secret: 'terces' }));
 app.use(passport.initialize());
 app.use(passport.session());

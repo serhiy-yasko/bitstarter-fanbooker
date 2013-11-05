@@ -23,7 +23,7 @@
     <% include navbar.ejs %>
     
     <div class="container">
-      <h2>Register</h2><hr>
+      <h2>Register or Login</h2><hr>
       <div class="span5 offset1 register-new-user">
 	<div id="register-form">
 	  <form action="/register/new_user" method="post">
@@ -59,11 +59,11 @@
 	  </form>
 	</div> <!-- end of register-form -->
 	<hr>
-	<p>Or sign up using...</p>
+	<p>Or sign in using...</p>
 	<div>
-	  <a href="/register/google">Google</a>
-	  <a href="/register/twitter">Twitter</a>
-	  <a href="/register/facebook">Facebook</a>
+	  <a href="/auth/google" class="btn">Google</a>
+	  <a href="/register/twitter" class="btn">Twitter</a>
+	  <a href="/register/facebook" class="btn">Facebook</a>
 	</div>
       </div> <!-- end of span5 -->
       <div class="span5 login">

@@ -43,6 +43,7 @@ var indexfn = function(request, response) {
 	name: Constants.APP_NAME,
 	title: "My First " + Constants.APP_NAME,
 	product_name: Constants.PRODUCT_NAME,
+	user: request.user,
 	twitter_username: Constants.TWITTER_USERNAME,
 	twitter_tweet: Constants.TWITTER_TWEET,
 	product_short_description: Constants.PRODUCT_SHORT_DESCRIPTION,
@@ -83,12 +84,20 @@ var venuesfn = function(request, response) {
 var registerfn = function(request, response) {
     response.render("registerpage", {
 	title: "User Registration",
+	user: request.user,
 	name: Constants.APP_NAME});
 };
 
 var contactfn = function(request, response) {
     response.render("contactpage", {
 	title: "Contact",
+	name: Constants.APP_NAME});
+};
+
+var accountfn = function(request, response) {
+    response.render("accountpage", {
+	title: "User Account",
+	user: request.user,
 	name: Constants.APP_NAME});
 };
 
@@ -117,7 +126,6 @@ var refresh_orderfn = function(request, response) {
     global.db.Order.refreshFromCoinbase(cb);
 };
 
-/*
 var register_new_userfn = function(request, response) {
     
 };
@@ -126,6 +134,16 @@ var register_loginfn = function(request, response) {
     passport.authenticate('local', { successRedirect: '/',
 				     failureRedirect: '/register',
 				     failureFlash: true });
+};
+
+var google_authfn = function(request, response) {
+    passport.authenticate('google', { failureRedirect: '/register' }),
+    response.redirect('/');
+};
+
+var logoutfn = function(request, response) {
+    request.logout();
+    response.redirect('/');
 };
 
 var register_via_googlefn = function(request, response) {
@@ -139,7 +157,7 @@ var register_via_twitterfn = function(request, response) {
 var register_via_facebookfn = function(request, response) {
     
 };
-*/
+
 
 /*
    Helper functions which create a ROUTES array for export and use by web.js
@@ -173,10 +191,14 @@ var ROUTES = define_routes({
     '/venues': venuesfn,
     '/register': registerfn,
     '/contact': contactfn,
+    '/account': accountfn,
     '/api/orders': api_orderfn,
     '/refresh_orders': refresh_orderfn,
     '/register/new_user': register_new_userfn,
     '/register/login': register_loginfn,
+    '/auth/google': google_authfn,
+    '/auth/google/return': google_authfn,
+    '/logout': logoutfn,
     '/register/google': register_via_googlefn,
     '/register/twitter': register_via_twitterfn,
     '/register/facebook': register_via_facebookfn
