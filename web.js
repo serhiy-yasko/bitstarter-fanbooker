@@ -114,13 +114,13 @@ passport.use(new LocalStrategy(function (username, password, done) {
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-200-192-54.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-200-192-54.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-201-25-241.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-201-25-241.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      
 	  profile.identifier = identifier;
-	  global.db.User.addUserAccount(profile, cb);
+	  // global.db.User.addUserAccount(profile);
 	  return done(null, profile);
       }); 
   }
@@ -157,7 +157,15 @@ app.get('/auth/google',
 app.get('/auth/google/return', 
 	passport.authenticate('google', { failureRedirect: '/register' }),
 	function(request, response) {
-	    response.redirect('/account');
+	    var cb = function(user_json, err) {
+		if(err) {
+		    console.log(err);
+		    response.send("Error processing user.");
+		} else {
+		    response.redirect('/account');
+		}
+	    };
+	    global.db.User.addUserAccount(request.user, cb);
 	}
 );
 

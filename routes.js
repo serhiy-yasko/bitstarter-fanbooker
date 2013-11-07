@@ -95,11 +95,15 @@ var contactfn = function(request, response) {
 };
 
 var accountfn = function(request, response) {
-    response.render("accountpage", {
-	title: "User Account",
-	user: request.user,
-	name: Constants.APP_NAME
-    });
+    var successcb = function(user_json) {
+	response.render("accountpage", {
+	    title: "User Account",
+	    user: user_json,
+	    name: Constants.APP_NAME
+	});
+    };
+    var errcb = build_errfn('Error retrieving user from database', response);
+    global.db.User.allToJSON(successcb, errcb);
 };
 
 var api_orderfn = function(request, response) {

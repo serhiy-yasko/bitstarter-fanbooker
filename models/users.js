@@ -31,33 +31,50 @@ module.exports = function(sequelize, DataTypes) {
                                 MAX_CONCURRENT_POSTGRES_QUERIES,
                                 this.addUserAccount.bind(this), errcb);
             },
-            addUserAccount: function(profile, cb) {
+            addUserAccount: function(user_obj, cb) {
+		var user = user_obj;
                 var _User = this;
-                _User.find({where: {email: user.email[0].value}}).success(function(user_instance) {
-                    if (user_instance) {
-                        // already exists, do nothing
-                        cb();
-                    } else {
-                        /*
-                          Build instance and save.
-			  Uses the _User from the enclosing scope,
-                          as 'this' within the callback refers to the current
-                          found instance.                         
-                        */
-                        var new_user_instance = _User.build({
-                            email: user.email[0].value,
-                            displayName: user.displayName
-                        });
-                        new_user_instance.save()
-			    .success(function() {
-				cb();
-                            })
-			    .error(function(err) {
-				cb(err);
+               
+		/*
+		_User.findOrCreate(
+		    { email: user.emails[0].value },
+		    { displayName: user.displayName })
+		.success(function(user_instance, created) {
+		    console.log(user_instance.values),
+		    console.log(created)		    
+		})
+		.error(function(err) {
+		    cb(err);
+		});
+		*/
+
+		_User.find(
+		    {where: 
+		     { email: user.emails[0].value }
+		    })
+		    .success(function(user_instance) {
+			
+			if (user_instance) {
+                            // already exists
+			    var user_json = JSON.stringify(user_instance);
+			    cb(user_json);
+			} else {
+                            var new_user_instance = _User.build({
+				email: user.emails[0].value,
+				displayName: user.displayName
                             });
-                    }
-                });
-	    }
+			    
+                            new_user_instance.save()
+				.success(function() {
+				    var user_json = JSON.stringify(new_user_instance);
+				    cb(user_json);
+				})
+				.error(function(err) {
+				    cb(err);
+				});
+			}
+                    });
+ 	    }
 	},
 	instanceMethods: {
 	    repr: function() {
