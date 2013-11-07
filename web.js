@@ -3,7 +3,7 @@ var express = require('express')
   , path    = require('path')
   , async   = require('async')
   , passport = require('passport')
-  , // LocalStrategy = require('passport-local').Strategy
+  //, LocalStrategy = require('passport-local').Strategy
   , GoogleStrategy = require('passport-google').Strategy
   , db      = require('./models')
   , ROUTES  = require('./routes');
@@ -114,23 +114,17 @@ passport.use(new LocalStrategy(function (username, password, done) {
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-200-242-232.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-200-242-232.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-200-192-54.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-200-192-54.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      
-      // To keep the example simple, the user's Google profile is returned to
-      // represent the logged-in user. In a typical application, you would want
-      // to associate the Google account with a user record in your database,
-      // and return that user instead.
-      profile.identifier = identifier;
-      return done(null, profile);
-    });
+      process.nextTick(function () {      
+	  profile.identifier = identifier;
+	  global.db.User.addUserAccount(profile, cb);
+	  return done(null, profile);
+      }); 
   }
 ));
-
 
 var app = express();
 app.set('views', __dirname + '/views');
@@ -141,7 +135,7 @@ app.use(express.favicon(path.join(__dirname, 'public/img/favicon.ico')));
 app.use(express.logger("dev"));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
-app.use(express.methodOverride());
+// app.use(express.methodOverride());
 app.use(express.session({ secret: 'terces' }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -149,6 +143,28 @@ app.use(passport.session());
 for(var ii in ROUTES) {
     app.get(ROUTES[ii].path, ROUTES[ii].fn);
 }
+
+
+// Redirect the user to Google for authentication.  When complete, Google
+// will redirect the user back to the application at
+//     /auth/google/return
+app.get('/auth/google', 
+	passport.authenticate('google'));
+
+// Google will redirect the user to this URL after authentication.  Finish
+// the process by verifying the assertion.  If valid, the user will be
+// logged in.  Otherwise, authentication has failed.
+app.get('/auth/google/return', 
+	passport.authenticate('google', { failureRedirect: '/register' }),
+	function(request, response) {
+	    response.redirect('/account');
+	}
+);
+
+app.get('/logout', function(request, response) {
+    request.logout();
+    response.redirect('/');
+});
 
 global.db.sequelize.sync().complete(function(err) {
     if (err) {

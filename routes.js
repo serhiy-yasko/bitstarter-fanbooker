@@ -1,5 +1,5 @@
-var uu      = require('underscore')
-  , db      = require('./models')
+var uu        = require('underscore')
+  , db        = require('./models')
   , Constants = require('./constants');
 
 var build_errfn = function(errmsg, response) {
@@ -98,7 +98,8 @@ var accountfn = function(request, response) {
     response.render("accountpage", {
 	title: "User Account",
 	user: request.user,
-	name: Constants.APP_NAME});
+	name: Constants.APP_NAME
+    });
 };
 
 var api_orderfn = function(request, response) {
@@ -124,38 +125,6 @@ var refresh_orderfn = function(request, response) {
 	}
     };
     global.db.Order.refreshFromCoinbase(cb);
-};
-
-var register_new_userfn = function(request, response) {
-    
-};
-
-var register_loginfn = function(request, response) {
-    passport.authenticate('local', { successRedirect: '/',
-				     failureRedirect: '/register',
-				     failureFlash: true });
-};
-
-var google_authfn = function(request, response) {
-    passport.authenticate('google', { failureRedirect: '/register' }),
-    response.redirect('/');
-};
-
-var logoutfn = function(request, response) {
-    request.logout();
-    response.redirect('/');
-};
-
-var register_via_googlefn = function(request, response) {
-    
-};
-
-var register_via_twitterfn = function(request, response) {
-    
-};
-
-var register_via_facebookfn = function(request, response) {
-    
 };
 
 
@@ -193,15 +162,7 @@ var ROUTES = define_routes({
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,
-    '/refresh_orders': refresh_orderfn,
-    '/register/new_user': register_new_userfn,
-    '/register/login': register_loginfn,
-    '/auth/google': google_authfn,
-    '/auth/google/return': google_authfn,
-    '/logout': logoutfn,
-    '/register/google': register_via_googlefn,
-    '/register/twitter': register_via_twitterfn,
-    '/register/facebook': register_via_facebookfn
+    '/refresh_orders': refresh_orderfn    
 });
 
 module.exports = ROUTES;
