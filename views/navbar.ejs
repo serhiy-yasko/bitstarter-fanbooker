@@ -11,7 +11,7 @@
       </button>
       <a class="brand" href="https://github.com/startup-class/bitstarter-leaderboard" target="_blank"><%= name %></a>
       <div class="nav-collapse collapse">
-        <ul class="nav">
+ 	<ul class="nav">
           <li><a href="/">Home</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/events">Events</a></li>
@@ -19,8 +19,13 @@
           <li><a href="/venues">Venues</a></li>
 	  <li><a href="/orders">Orders</a></li>
           <li><a href="/contact">Contact</a></li></ul>
-	  <a href="/register" id="register-nav-right">Come On In!</a>
-        </ul>
+	  <% if (!user) { %>
+	     <a href="/register" class="register-nav-right">Come On In!</a>
+          <% } else { %>
+	     <a href="/logout" class="register-nav-right">Log Out</a>
+	     <a href="/account" class="register-nav-right">Your Account</a>
+	  <% } %>      
+	</ul>
       </div><!--/.nav-collapse -->
     </div>
   </div>

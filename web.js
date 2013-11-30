@@ -3,7 +3,7 @@ var express = require('express')
   , path    = require('path')
   , async   = require('async')
   , passport = require('passport')
-  //, LocalStrategy = require('passport-local').Strategy
+  , LocalStrategy = require('passport-local').Strategy
   , GoogleStrategy = require('passport-google').Strategy
   , db      = require('./models')
   , ROUTES  = require('./routes');
@@ -114,8 +114,8 @@ passport.use(new LocalStrategy(function (username, password, done) {
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-201-97-251.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-201-97-251.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-201-124-77.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-201-124-77.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      

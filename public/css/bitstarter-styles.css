@@ -113,7 +113,7 @@ body{
 .navbar-fixed-top {
     margin-bottom: 0;
 }
-#register-nav-right {
+.register-nav-right {
     display: block;
     float: right;
     padding: 10px 15px;
