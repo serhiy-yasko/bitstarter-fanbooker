@@ -113,6 +113,11 @@ body{
 .navbar-fixed-top {
     margin-bottom: 0;
 }
+#register-nav-right {
+    display: block;
+    float: right;
+    padding: 10px 15px;
+}
 .heading, .subheading {
   font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
   text-align: center;

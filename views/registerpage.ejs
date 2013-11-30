@@ -24,7 +24,8 @@
     
     <div class="container">
       <h2>Register or Login</h2><hr>
-      <div class="span5 offset1 register-new-user">
+       <div class="span5 offset1 register-new-user">
+	<h3>Please register</h3>
 	<div id="register-form">
 	  <form action="/register/new_user" method="post">
 	    <div id="form-alerts"></div>
@@ -58,15 +59,10 @@
 	    </div>
 	  </form>
 	</div> <!-- end of register-form -->
-	<hr>
-	<p>Or sign in using...</p>
-	<div>
-	  <a href="/auth/google" class="btn">Google</a>
-	  <a href="/register/twitter" class="btn">Twitter</a>
-	  <a href="/register/facebook" class="btn">Facebook</a>
-	</div>
       </div> <!-- end of span5 -->
+      
       <div class="span5 login">
+	<h3>Or sign in</h3>
 	<div id="login-form">
 	  <form action="/register/login" method="post">
 	    <div id="form-alerts"></div>
@@ -85,7 +81,13 @@
 	    </div>
 	  </form>
 	</div> <!-- end of login-form -->
-      </div>
+	<hr>
+	<div>
+	  <a href="/auth/google" class="btn">Google</a>
+	  <a href="/register/twitter" class="btn">Twitter</a>
+	  <a href="/register/facebook" class="btn">Facebook</a>
+	</div>
+      </div> <!-- end of span5 -->
     </div> <!-- end of container -->
   </body>
 </html>
