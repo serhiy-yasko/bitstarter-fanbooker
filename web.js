@@ -81,46 +81,56 @@ var express = require('express')
   schedule.
 */
 
+// PASSPORT GEAR [1]
+
+function findById(id, fn) {
+  var idx = id - 1;
+  if (users[idx]) {
+    fn(null, users[idx]);
+  } else {
+    fn(new Error('User ' + id + ' does not exist'));
+  }
+}
+
+function findByUsername(username, fn) {
+  for (var i = 0, len = users.length; i < len; i++) {
+    var user = users[i];
+    if (user.username === username) {
+      return fn(null, user);
+    }
+  }
+  return fn(null, null);
+}
+
 // Passport session setup
 passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+    done(null, user.id);
 });
 
-/* Use the Local Strategy within Passport
-passport.use(new LocalStrategy(function (username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
-	if (err) {
-	    return done(err);
-	}
-	if (!user) {
-	    return done(null, false, { message: 'Unknown user: ' + username});
-	}
-	user.comparePassword(password, function(err, isMatch) {
-	    if (err) {
-		return done(err);
-	    }
-	    if (isMatch) {
-		return done(null, user);
-	    } else {
-		return done(null, false, { message: 'Invalid Password' });
-	    }
-	});
+passport.deserializeUser(function(id, done) {
+    findById(id, function (err, user) {
+	done(err, user);
     });
-}));
-*/
+});
+
+// Use the Local Strategy within Passport
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        process.nextTick(function () {
+      
+	   
+	});
+    }
+));
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-201-124-77.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-201-124-77.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-201-93-84.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-201-93-84.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      
 	  profile.identifier = identifier;
-	  // global.db.User.addUserAccount(profile);
 	  return done(null, profile);
       }); 
   }
@@ -144,6 +154,7 @@ for(var ii in ROUTES) {
     app.get(ROUTES[ii].path, ROUTES[ii].fn);
 }
 
+// PASSPORT GEAR [2]
 
 // Redirect the user to Google for authentication.  When complete, Google
 // will redirect the user back to the application at
@@ -151,9 +162,9 @@ for(var ii in ROUTES) {
 app.get('/auth/google', 
 	passport.authenticate('google'));
 
-// Google will redirect the user to this URL after authentication.  Finish
-// the process by verifying the assertion.  If valid, the user will be
-// logged in.  Otherwise, authentication has failed.
+// Google will redirect the user to this URL after authentication.
+// Finish the process by verifying the assertion.
+// If valid, the user will be logged in. Otherwise, authentication has failed.
 app.get('/auth/google/return', 
 	passport.authenticate('google', { failureRedirect: '/register' }),
 	function(request, response) {
@@ -168,6 +179,35 @@ app.get('/auth/google/return',
 	    global.db.User.addUserAccount(request.user, cb);
 	}
 );
+
+app.post('/register_new_user',
+	function(request, response) {
+	    var cb = function(err) {
+		if(err) {
+		    console.log(err);
+		    response.send("Error registering the new user.");
+		} else {
+		    response.redirect('/account');
+		}
+	    };
+	    global.db.User.addUserAccount(request.user, cb);
+	}
+);
+
+app.post('/login', 
+	 function(request, response, next) {
+	     passport.authenticate('local', function(err, user, info) {
+		 if (err) { return next(err); }
+		 if (!user) {
+		     request.session.messages = [info.message];
+		     return response.redirect('/login');
+		 }
+		 request.logIn(user, function(err) {
+		     if (err) { return next(err); }
+		     return response.redirect('/');
+		 });
+	     })(request, response, next);
+});
 
 app.get('/logout', function(request, response) {
     request.logout();

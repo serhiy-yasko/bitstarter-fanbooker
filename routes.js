@@ -62,7 +62,7 @@ var aboutfn = function(request, response) {
 var orderfn = function(request, response) {
     var successcb = function(orders_json) {
 	response.render("orderpage", {
-	    orders: orders_json 
+	    orders: orders_json
 	});
     };
     var errcb = build_errfn('error retrieving orders', response);
@@ -85,6 +85,7 @@ var registerfn = function(request, response) {
     response.render("registerpage", {
 	title: "User Registration",
 	user: request.user,
+	message: request.session.messages,
 	name: Constants.APP_NAME});
 };
 
@@ -131,7 +132,6 @@ var refresh_orderfn = function(request, response) {
     global.db.Order.refreshFromCoinbase(cb);
 };
 
-
 /*
    Helper functions which create a ROUTES array for export and use by web.js
 
@@ -166,7 +166,7 @@ var ROUTES = define_routes({
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,
-    '/refresh_orders': refresh_orderfn    
+    '/refresh_orders': refresh_orderfn
 });
 
 module.exports = ROUTES;

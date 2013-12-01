@@ -4,12 +4,12 @@ var uu = require('underscore');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
-	// username: {type: DataTypes.STRING, unique: true, allowNull: false},
+	username: {type: DataTypes.STRING, unique: true, allowNull: false},
 	email: {type: DataTypes.STRING, unique: true, allowNull: false, validate: {isEmail: true}},
-	// password: {type: DataTypes.STRING, allowNull: false},
-	// firstName: {type: DataTypes.STRING, allowNull: false},
-	// lastName: {type: DataTypes.STRING, allowNull: false},
-	displayName: {type: DataTypes.STRING, allowNull: false},
+	password: {type: DataTypes.STRING, allowNull: false},
+	firstName: {type: DataTypes.STRING, allowNull: false},
+	lastName: {type: DataTypes.STRING, allowNull: false},
+	displayName: {type: DataTypes.STRING, allowNull: true},
 	privilege: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0}
     }, {
 	paranoid: true,
@@ -49,8 +49,8 @@ module.exports = function(sequelize, DataTypes) {
 		*/
 
 		_User.find(
-		    {where: 
-		     { email: user.emails[0].value }
+		    { where: 
+		      { email: user.email }
 		    })
 		    .success(function(user_instance) {
 			
@@ -60,8 +60,14 @@ module.exports = function(sequelize, DataTypes) {
 			    cb(user_json);
 			} else {
                             var new_user_instance = _User.build({
-				email: user.emails[0].value,
-				displayName: user.displayName
+				username: user.username,
+				email: user.email,
+				// email: user.emails[0].value,
+				password: this.setPassword(user.password),
+				firstName: user.firstName,
+				lastName: user.lastName,
+				displayName: user.displayName,
+				privilege: 1
                             });
 			    
                             new_user_instance.save()
