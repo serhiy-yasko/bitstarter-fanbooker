@@ -117,16 +117,15 @@ passport.deserializeUser(function(id, done) {
 passport.use(new LocalStrategy(
     function (username, password, done) {
         process.nextTick(function () {
-      
-	   
+	    
 	});
     }
 ));
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-201-93-84.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-201-93-84.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-201-92-109.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-201-92-109.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      
@@ -143,8 +142,11 @@ app.set('port', process.env.PORT || 8080);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon.ico')));
 app.use(express.logger("dev"));
-app.use(express.cookieParser());
 app.use(express.bodyParser());
+app.use(express.cookieParser());
+// app.use(express.urlencoded()); 
+// app.use(express.json());
+// app.use(express.bodyParser());
 // app.use(express.methodOverride());
 app.use(express.session({ secret: 'terces' }));
 app.use(passport.initialize());
@@ -181,18 +183,18 @@ app.get('/auth/google/return',
 );
 
 app.post('/register_new_user',
-	function(request, response) {
-	    var cb = function(err) {
-		if(err) {
-		    console.log(err);
-		    response.send("Error registering the new user.");
-		} else {
-		    response.redirect('/account');
-		}
-	    };
-	    global.db.User.addUserAccount(request.user, cb);
-	}
-);
+	 function(request, response) {
+	     var cb = function(err) {
+		 if(err) {
+		     console.log(err);
+		     response.send("Error registering the new user.");
+		 } else {
+		     response.redirect('/');
+		 }
+	     };
+	        	     
+	     global.db.User.addUserAccount(request.body.user, cb);
+});
 
 app.post('/login', 
 	 function(request, response, next) {
@@ -200,7 +202,7 @@ app.post('/login',
 		 if (err) { return next(err); }
 		 if (!user) {
 		     request.session.messages = [info.message];
-		     return response.redirect('/login');
+		     return response.redirect('/register');
 		 }
 		 request.logIn(user, function(err) {
 		     if (err) { return next(err); }

@@ -31,67 +31,68 @@
 	    <div id="form-alerts"></div>
 	    <div class="form-group">
 	      <label class="control-label">Pick a Username:</label>
-	      <input class="form-control" type="text" value="" name="username">
+	      <input class="form-control" type="text" value="" name="user[username]">
 	      <span class="help-block"></span>
 	    </div>
 	    <div class="form-group">
 	      <label class="control-label">Enter Your First Name:</label>
-	      <input class="form-control" type="text" value="" name="firstname">
+	      <input class="form-control" type="text" value="" name="user[firstname]">
 	      <span class="help-block"></span>
 	    </div>
 	    <div class="form-group">
 	      <label class="control-label">Enter Your Last Name:</label>
-	      <input class="form-control" type="text" value="" name="lastname">
+	      <input class="form-control" type="text" value="" name="user[lastname]">
 	      <span class="help-block"></span>
 	    </div>
 	    <div class="form-group">
 	      <label class="control-label">Enter Your Email:</label>
-	      <input class="form-control" type="text" value="" name="email">
+	      <input class="form-control" type="text" value="" name="user[email]">
 	      <span class="help-block"></span>
 	    </div>
 	    <div class="form-group">
 	      <label class="control-label">Create a Password:</label>
-	      <input class="form-control" type="password" value="" name="password">
+	      <input class="form-control" type="password" value="" name="user[password]">
 	      <span class="help-block"></span>
 	    </div>
 	    <div class="form-group">
-	      <button class="btn btn-primary btn-register" type="button">Create My Account</button>
+	      <button class="btn btn-primary btn-register" type="submit">Create My Account</button>
 	    </div>
 	  </form>
 	</div> <!-- end of register-form -->
       </div> <!-- end of span5 -->
-      
-      <div class="span5 login">
-	<h3>Or sign in</h3>
-	<div id="login-form">
-	  <form action="/login" method="post">
-	    <div id="form-alerts">
-	      <% if (message) { %>
-	      <p><%= message %></p>
-	      <% } %>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label">Your Username:</label>
-	      <input class="form-control" type="text" value="" name="username">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label">Your Password:</label>
-	      <input class="form-control" type="password" value="" name="password">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <button class="btn btn-primary btn-login" type="button">Come On In!</button>
-	    </div>
-	  </form>
-	</div> <!-- end of login-form -->
-	<hr>
-	<div>
-	  <a href="/auth/google" class="btn">Google</a>
-	  <a href="/register/twitter" class="btn">Twitter</a>
-	  <a href="/register/facebook" class="btn">Facebook</a>
-	</div>
-      </div> <!-- end of span5 -->
+
+       <div class="span5 login">
+         <h3>Or sign in</h3>
+         <div id="login-form">
+           <form action="/login" method="post">
+             <div id="form-alerts">
+               <% if (message) { %>
+               <p><%= message %></p>
+               <% } %>
+             </div>
+             <div class="form-group">
+               <label class="control-label">Your Username:</label>
+               <input class="form-control" type="text" value="" name="username">
+               <span class="help-block"></span>
+             </div>
+             <div class="form-group">
+               <label class="control-label">Your Password:</label>
+               <input class="form-control" type="password" value="" name="password">
+               <span class="help-block"></span>
+             </div>
+             <div class="form-group">
+               <button class="btn btn-primary btn-login" type="submit">Come On In!</button>
+             </div>
+           </form>
+         </div> <!-- end of login-form -->
+         <hr>
+         <div>
+           <a href="/auth/google" class="btn">Google</a>
+           <a href="/register/twitter" class="btn">Twitter</a>
+           <a href="/register/facebook" class="btn">Facebook</a>
+         </div>
+       </div> <!-- end of span5 -->
+       
     </div> <!-- end of container -->
   </body>
 </html>

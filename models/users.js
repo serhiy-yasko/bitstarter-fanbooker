@@ -1,6 +1,7 @@
 var async = require('async');
 var util = require('util');
 var uu = require('underscore');
+var bcrypt = require('bcrypt');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
@@ -63,10 +64,10 @@ module.exports = function(sequelize, DataTypes) {
 				username: user.username,
 				email: user.email,
 				// email: user.emails[0].value,
-				password: this.setPassword(user.password),
-				firstName: user.firstName,
-				lastName: user.lastName,
-				displayName: user.displayName,
+				password: _User.setPassword(user.password),
+				firstName: user.firstname,
+				lastName: user.lastname,
+				displayName: user.username,
 				privilege: 1
                             });
 			    
