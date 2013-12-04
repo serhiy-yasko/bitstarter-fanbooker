@@ -124,8 +124,8 @@ passport.use(new LocalStrategy(
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-201-92-109.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-201-92-109.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-201-40-65.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-201-40-65.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      

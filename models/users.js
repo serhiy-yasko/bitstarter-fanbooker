@@ -1,7 +1,7 @@
 var async = require('async');
 var util = require('util');
 var uu = require('underscore');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
@@ -60,11 +60,14 @@ module.exports = function(sequelize, DataTypes) {
 			    var user_json = JSON.stringify(user_instance);
 			    cb(user_json);
 			} else {
+
+			    var salt = bcrypt.genSaltSync(10);
+			    
                             var new_user_instance = _User.build({
 				username: user.username,
 				email: user.email,
 				// email: user.emails[0].value,
-				password: _User.setPassword(user.password),
+				password: bcrypt.hashSync(user.password, salt),
 				firstName: user.firstname,
 				lastName: user.lastname,
 				displayName: user.username,
