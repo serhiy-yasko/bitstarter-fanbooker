@@ -3,10 +3,29 @@ var express = require('express')
   , path    = require('path')
   , async   = require('async')
   , passport = require('passport')
+  , bcrypt = require('bcrypt-nodejs')
   , LocalStrategy = require('passport-local').Strategy
   , GoogleStrategy = require('passport-google').Strategy
   , db      = require('./models')
   , ROUTES  = require('./routes');
+
+var cryptPassword = function(password, callback) {
+   bcrypt.genSalt(10, function(err, salt) {
+       if (err) return callback(err);
+       else {
+           bcrypt.hash(password, salt, null, function(err, hash) {
+               return callback(err, hash);
+           });
+       }
+   });
+};
+
+var comparePassword = function(password, userPassword, callback) {
+    bcrypt.compare(password, userPassword, function(err, isPasswordMatch) {
+	if (err) return callback(err);
+	else return callback(null, isPasswordMatch);
+    });
+};
 
 /*
   Initialize the Express app, the E in the MEAN stack (from mean.io).
@@ -124,8 +143,8 @@ passport.use(new LocalStrategy(
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-201-40-65.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-201-40-65.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-200-198-246.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-200-198-246.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      
@@ -170,6 +189,7 @@ app.get('/auth/google',
 app.get('/auth/google/return', 
 	passport.authenticate('google', { failureRedirect: '/register' }),
 	function(request, response) {
+
 	    var cb = function(user_json, err) {
 		if(err) {
 		    console.log(err);
@@ -184,16 +204,36 @@ app.get('/auth/google/return',
 
 app.post('/register_new_user',
 	 function(request, response) {
-	     var cb = function(err) {
-		 if(err) {
+	     
+	     var cb = function(user_json, err) {
+		 if (err) {
 		     console.log(err);
 		     response.send("Error registering the new user.");
 		 } else {
 		     response.redirect('/');
 		 }
 	     };
-	        	     
-	     global.db.User.addUserAccount(request.body.user, cb);
+
+	     var callback = function(err, hash) {
+		 if (err) {
+		     console.log(err);
+		     response.send("Error encrypting password.");
+		 } else {
+		     var user_form_data = {
+			 username: request.body.user.username,
+			 firstname: request.body.user.firstname,
+			 lastname: request.body.user.lastname,
+			 email: request.body.user.email,
+			 password: hash 
+		     };
+
+		     global.db.User.addUserAccount(user_form_data, cb);
+		 }
+	     };
+	     
+	     cryptPassword(request.body.user.password, callback);
+  	     	     
+	     
 });
 
 app.post('/login', 

@@ -60,14 +60,12 @@ module.exports = function(sequelize, DataTypes) {
 			    var user_json = JSON.stringify(user_instance);
 			    cb(user_json);
 			} else {
-
-			    var salt = bcrypt.genSaltSync(10);
-			    
+			    			    
                             var new_user_instance = _User.build({
 				username: user.username,
 				email: user.email,
 				// email: user.emails[0].value,
-				password: bcrypt.hashSync(user.password, salt),
+				password: user.password,
 				firstName: user.firstname,
 				lastName: user.lastname,
 				displayName: user.username,
@@ -92,20 +90,6 @@ module.exports = function(sequelize, DataTypes) {
 		    "User <ID: %s Username: %s Email: %s Password: %s FirstName: %s LastName: %s DisplayName: %s Privilege: %s " +
 			"Created: %s Updated:%s", this.id, this.username, this.email,
 		    this.password, this.firstName, this.lastName, this.displayName, this.privilege, this.createdAt, this.updatedAt);
-	    },
-	    setPassword: function(password, done) {
-		return bcrypt.genSalt(10, function(err, salt) {
-		    return bcrypt.hash(password, salt, function(error, encrypted) {
-			this.password = encrypted;
-			this.salt = salt;
-			return done();
-		    });
-		});
-	    },
-	    verifyPassword: function(password, done) {
-		return bcrypt.compare(password, this.password, function(err, res) {
-		    return done(err, res);
-		});
 	    }
 	}
     });
