@@ -65,7 +65,7 @@ var orderfn = function(request, response) {
 	    orders: orders_json
 	});
     };
-    var errcb = build_errfn('error retrieving orders', response);
+    var errcb = build_errfn('Error retrieving orders', response);
     global.db.Order.allToJSON(successcb, errcb);
 };
 

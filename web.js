@@ -134,6 +134,10 @@ passport.deserializeUser(function(id, done) {
 
 // Use the Local Strategy within Passport
 passport.use(new LocalStrategy(
+
+    { usernameField: 'user[email]',
+      passwordField: 'user[password]'},
+
     function (username, password, done) {
         process.nextTick(function () {
 	    
@@ -143,8 +147,8 @@ passport.use(new LocalStrategy(
 
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-200-198-246.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-200-198-246.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-200-243-199.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-200-243-199.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      
@@ -232,23 +236,51 @@ app.post('/register_new_user',
 	     };
 	     
 	     cryptPassword(request.body.user.password, callback);
-  	     	     
-	     
 });
 
 app.post('/login', 
 	 function(request, response, next) {
-	     passport.authenticate('local', function(err, user, info) {
-		 if (err) { return next(err); }
-		 if (!user) {
-		     request.session.messages = [info.message];
-		     return response.redirect('/register');
-		 }
-		 request.logIn(user, function(err) {
-		     if (err) { return next(err); }
-		     return response.redirect('/');
-		 });
-	     })(request, response, next);
+	     passport.authenticate('local', 
+				   function(err, user, info) {
+
+				       if (err) { return next(err); }
+
+				       if (!user) {
+					   request.session.messages = [info.message];
+					   return response.redirect('/register');
+				       }
+
+				       request.logIn(user, 
+						     function(err) {
+
+							 if (err) { return next(err); }
+							 
+							 var successcb = function(user_json) {
+							     
+							     var callback = function(err, isPasswordMatch) {
+
+								 if (err) { return next(err); }
+
+								 if (isPasswordMatch) {
+								     return response.redirect('/');
+								 } else {
+								     response.send("Passwords do not match. Please try again.");
+								     return response.redirect('/register');
+								 }    
+							     };
+							     
+							     comparePassword(request.body.user.password, user_json[0].password, callback);
+							 };
+
+							 var errcb = build_errfn('Error retrieving user from database', response);
+
+							 global.db.User.addUserAccount(request.user, cb);
+							 							 
+							 //if (err) { return next(err); }
+							 //return response.redirect('/');
+				       });
+
+				   })(request, response, next);
 });
 
 app.get('/logout', function(request, response) {
