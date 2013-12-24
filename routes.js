@@ -89,6 +89,14 @@ var registerfn = function(request, response) {
 	name: Constants.APP_NAME});
 };
 
+var loginfn = function(request, response) {
+    response.render("loginpage", {
+	title: "User Login",
+	user: request.user,
+	message: request.session.messages,
+	name: Constants.APP_NAME});
+};
+
 var contactfn = function(request, response) {
     response.render("contactpage", {
 	title: "Contact",
@@ -163,6 +171,7 @@ var ROUTES = define_routes({
     '/agencies': agenciesfn,
     '/venues': venuesfn,
     '/register': registerfn,
+    '/login': loginfn,
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,

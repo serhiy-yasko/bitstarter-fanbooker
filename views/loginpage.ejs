@@ -23,43 +23,39 @@
     <% include navbar.ejs %>
     
     <div class="container">
-      <h2>Please register</h2><hr>
-       <div class="span5 register-new-user">
-	 <div id="register-form">	  
-	  <form action="/register_new_user" method="post">
-	    <div id="form-alerts"></div>
-	    <div class="form-group">
-	      <label class="control-label">Pick a Username:</label>
-	      <input class="form-control" type="text" value="" name="user[username]">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label">Enter Your First Name:</label>
-	      <input class="form-control" type="text" value="" name="user[firstname]">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label">Enter Your Last Name:</label>
-	      <input class="form-control" type="text" value="" name="user[lastname]">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label">Enter Your Email:</label>
-	      <input class="form-control" type="text" value="" name="user[email]">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <label class="control-label">Create a Password:</label>
-	      <input class="form-control" type="password" value="" name="user[password]">
-	      <span class="help-block"></span>
-	    </div>
-	    <div class="form-group">
-	      <button class="btn btn-primary btn-register" type="submit">Create My Account!</button>
-	    </div>
-	  </form>
-	</div> <!-- end of register-form -->
+      
+      <h2>Please sign in</h2><hr>
+      <div class="span5 login">
+        <div id="login-form">
+          <form action="/sign_in" method="post">
+            <div id="form-alerts">
+              <% if (message) { %>
+              <p><%= message %></p>
+              <% } %>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Your Email:</label>
+              <input class="form-control" type="text" value="" name="user[email]">
+              <span class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Your Password:</label>
+              <input class="form-control" type="password" value="" name="user[password]">
+              <span class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-login" type="submit">Come On In!</button>
+            </div>
+          </form>
+        </div> <!-- end of login-form -->
+        <hr>
+        <div>
+          <a href="/auth/google" class="btn">Google</a>
+          <a href="/register/twitter" class="btn">Twitter</a>
+          <a href="/register/facebook" class="btn">Facebook</a>
+        </div>	
       </div> <!-- end of span5 -->
-            
+             
     </div> <!-- end of container -->
   </body>
 </html>
