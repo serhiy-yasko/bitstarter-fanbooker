@@ -82,7 +82,41 @@ module.exports = function(sequelize, DataTypes) {
 				});
 			}
                     });
- 	    }
+ 	    },
+	    findAccountByEmail: function(user_email, cb) {
+                var _User = this;
+		_User.find(
+                    { where:
+                      { email: user_email }
+                    })
+                    .success(function(user_instance) {
+                        if (user_instance) {
+                            // already exists
+                            var user_json = JSON.stringify(user_instance);
+                            cb(user_json);
+			}
+		    })
+		    .error(function(err) {
+			cb(err);
+		    });
+	    },
+	    findAccountById: function(user_id, cb) {
+                var _User = this;
+                _User.find(
+                    { where:
+                      { id: user_id }
+                    })
+                    .success(function(user_instance) {
+                        if (user_instance) {
+                            // already exists
+                            var user_json = JSON.stringify(user_instance);
+                            cb(user_json);
+                        }
+                    })
+                    .error(function(err) {
+                        cb(err);
+                    });
+            }
 	},
 	instanceMethods: {
 	    repr: function() {
