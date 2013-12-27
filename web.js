@@ -5,7 +5,8 @@ var express = require('express')
   , passport = require('passport')
   , bcrypt = require('bcrypt-nodejs')
   , LocalStrategy = require('passport-local').Strategy
-  , GoogleStrategy = require('passport-google').Strategy
+  //, GoogleStrategy = require('passport-google').Strategy
+  , expressValidator = require('express-validator');
   , db      = require('./models')
   , ROUTES  = require('./routes');
 
@@ -128,6 +129,11 @@ function findByEmail(username, fn) {
     global.db.User.findAccountByEmail(username, cb); 
 }
 
+function ensureAuthenticated(request, response, next) {
+  if (request.isAuthenticated()) { return next(); }
+  response.redirect('/login')
+}
+
 // Passport session setup
 passport.serializeUser(function(user, done) {
     done(null, user.id);
@@ -164,10 +170,13 @@ passport.use(new LocalStrategy(
     }
 ));
 
+/*
+// ... Putting aside GoogleStrategy for now 
+//
 // Use the GoogleStrategy within Passport
 passport.use(new GoogleStrategy({
-    returnURL: 'http://ec2-54-200-44-64.us-west-2.compute.amazonaws.com:8080/auth/google/return',
-    realm: 'http://ec2-54-200-44-64.us-west-2.compute.amazonaws.com:8080/'
+    returnURL: 'http://ec2-54-200-71-156.us-west-2.compute.amazonaws.com:8080/auth/google/return',
+    realm: 'http://ec2-54-200-71-156.us-west-2.compute.amazonaws.com:8080/'
   },
   function(identifier, profile, done) {
       process.nextTick(function () {      
@@ -176,6 +185,7 @@ passport.use(new GoogleStrategy({
       }); 
   }
 ));
+*/
 
 // MAIN APP CONFIGURATION
 
@@ -187,7 +197,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon.ico')));
 app.use(express.logger("dev"));
 app.use(express.bodyParser());
-app.use(express.cookieParser());
+app.use(expressValidator());
+app.use(express.cookieParser('keyboard cat'));
 // app.use(express.urlencoded()); 
 // app.use(express.json());
 // app.use(express.bodyParser());
@@ -202,6 +213,9 @@ for(var ii in ROUTES) {
 
 // PASSPORT GEAR [2]
 
+/*
+// ... Putting aside GoogleStrategy for now
+//
 // Redirect the user to Google for authentication.  When complete, Google
 // will redirect the user back to the application at
 //     /auth/google/return
@@ -225,9 +239,25 @@ app.get('/auth/google/return',
 	    global.db.User.addUserAccount(request.user, cb);
 	}
 );
+*/
 
 app.post('/register_new_user',
 	 function(request, response) {
+
+	     // request.checkBody('postparam', 'Invalid postparam').notEmpty().isInt();
+	     request.assert('user[username]', 'Please use only alphanumeric characters').notEmpty().isAlphanumeric();
+	     request.assert('user[firstname]', 'Please state your real first name').notEmpty().isAlpha();
+	     request.assert('user[lastname]', 'Please state your real last name').notEmpty().isAlpha();
+	     request.assert('user[email]', 'Please enter your actual email address').notEmpty().isEmail();
+	     request.assert('user[password]', 'Please use only alphanumeric characters').notEmpty().isAlphanumeric();
+	     
+	     var val_errors = request.validationErrors();
+
+	     if (val_errors) {
+		 request.session.massages = [val_errors];
+		 return response.redirect('/register');
+	     }
+	     
 	     var cb = function(user_json, err) {
 		 if (err) {
 		     console.log(err);

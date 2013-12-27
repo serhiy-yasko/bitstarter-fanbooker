@@ -24,10 +24,15 @@
     
     <div class="container">
       <h2>Please register</h2><hr>
-       <div class="span5 register-new-user">
-	 <div id="register-form">	  
+      <div class="span5 register-new-user">
+	<div id="register-form">
+	  <p class="remark">All fields are required.</p>
 	  <form action="/register_new_user" method="post">
-	    <div id="form-alerts"></div>
+	    <div id="form-alerts">
+	      <% if (message) { %>
+              <p><%= message %></p>
+              <% } %>
+	    </div>
 	    <div class="form-group">
 	      <label class="control-label">Pick a Username:</label>
 	      <input class="form-control" type="text" value="" name="user[username]">

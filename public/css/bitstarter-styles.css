@@ -181,8 +181,13 @@ div#home-bg {
     width: 100%;
     z-index: -1;
 }
+div#form-alerts p {
+    color: red;
+    font-style: italic;
+}
 
 /* Video pitch and Action */
+
 .pitch {
   padding: 2.5% 0%;
 }
@@ -252,3 +257,5 @@ div.addthis_toolbox {
     width: 100%;
     margin: 0 auto;
 }
+
+

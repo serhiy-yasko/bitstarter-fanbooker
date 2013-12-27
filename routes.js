@@ -55,6 +55,7 @@ var aboutfn = function(request, response) {
     response.render("aboutpage", {
 	name: Constants.APP_NAME,
 	title: "About",
+	user: request.user,
 	product_name: Constants.PRODUCT_NAME
     });
 };
@@ -72,12 +73,14 @@ var orderfn = function(request, response) {
 var agenciesfn = function(request, response) {
     response.render("agenciespage", {
 	title: "Promo Agencies",
+	user: request.user,
 	name: Constants.APP_NAME});
 };
 
 var venuesfn = function(request, response) {
     response.render("venuespage", {
 	title: "Venues & Clubs",
+	user: request.user,
 	name: Constants.APP_NAME});
 };
 
@@ -100,19 +103,15 @@ var loginfn = function(request, response) {
 var contactfn = function(request, response) {
     response.render("contactpage", {
 	title: "Contact",
+	user: request.user,
 	name: Constants.APP_NAME});
 };
 
 var accountfn = function(request, response) {
-    var successcb = function(user_json) {
-	response.render("accountpage", {
-	    title: "User Account",
-	    user: user_json,
-	    name: Constants.APP_NAME
-	});
-    };
-    var errcb = build_errfn('Error retrieving user from database', response);
-    global.db.User.allToJSON(successcb, errcb);
+    response.render("accountpage", {
+        title: "User Account",
+        user: request.user,
+        name: Constants.APP_NAME}); 
 };
 
 var api_orderfn = function(request, response) {
