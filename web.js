@@ -6,7 +6,7 @@ var express = require('express')
   , bcrypt = require('bcrypt-nodejs')
   , LocalStrategy = require('passport-local').Strategy
   //, GoogleStrategy = require('passport-google').Strategy
-  , expressValidator = require('express-validator');
+  , expressValidator = require('express-validator')
   , db      = require('./models')
   , ROUTES  = require('./routes');
 
@@ -207,6 +207,23 @@ app.use(express.session({ secret: 'terces' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+	var namespace = param.split('.')
+	, root    = namespace.shift()
+	, formParam = root;
+	
+	while(namespace.length) {
+	    formParam += '[' + namespace.shift() + ']';
+	}
+	return {
+	    param : formParam,
+	    msg   : msg,
+	    value : value
+	};
+    }
+}));
+
 for(var ii in ROUTES) {
     app.get(ROUTES[ii].path, ROUTES[ii].fn);
 }
@@ -243,21 +260,47 @@ app.get('/auth/google/return',
 
 app.post('/register_new_user',
 	 function(request, response) {
-
-	     // request.checkBody('postparam', 'Invalid postparam').notEmpty().isInt();
-	     request.assert('user[username]', 'Please use only alphanumeric characters').notEmpty().isAlphanumeric();
-	     request.assert('user[firstname]', 'Please state your real first name').notEmpty().isAlpha();
-	     request.assert('user[lastname]', 'Please state your real last name').notEmpty().isAlpha();
-	     request.assert('user[email]', 'Please enter your actual email address').notEmpty().isEmail();
-	     request.assert('user[password]', 'Please use only alphanumeric characters').notEmpty().isAlphanumeric();
 	     
+	     console.log(request.param());
+     
+	     
+	     request.assert(['user.username'], 'Please use only alphanumeric characters').isAlphanumeric();
+	     request.assert(['user.firstname'], 'Please state your real first name').isAlpha();
+	     request.assert(['user.lastname'], 'Please state your real last name').isAlpha();
+	     request.assert(['user.email'], 'Please enter your actual email address').isEmail();
+	     request.assert(['user.password'], 'Please use only alphanumeric characters').isAlphanumeric();
+	     
+	     /*
+	     request.checkBody(['user.username'], 'Please use only alphanumeric characters').isAlphanumeric();
+             request.checkBody(['user.firstname'], 'Please state your real first name').isAlpha();
+             request.checkBody(['user.lastname'], 'Please state your real last name').isAlpha();
+             request.checkBody(['user.email'], 'Please enter your actual email address').isEmail();
+             request.checkBody(['user.password'], 'Please use only alphanumeric characters').isAlphanumeric();
+	     */
+
 	     var val_errors = request.validationErrors();
 
 	     if (val_errors) {
-		 request.session.massages = [val_errors];
+		 console.log(val_errors);
+		 
 		 return response.redirect('/register');
 	     }
-	     
+	     	     
+	     /*
+	     request.onValidationError(function (msg) {
+		 // Redirect the user with error 'msg'
+		 console.log(msg);
+		 return response.redirect('/register');
+	     });
+
+	     //Validate user input
+	     request.check(['user.username'], 'Please use only alphanumeric characters').isAlphanumeric();
+             request.check(['user.firstname'], 'Please state your real first name').isAlpha();
+             request.check(['user.lastname'], 'Please state your real last name').isAlpha();
+             request.check(['user.email'], 'Please enter your actual email address').isEmail();
+             request.check(['user.password'], 'Please use only alphanumeric characters').isAlphanumeric();
+	     */
+	     	     
 	     var cb = function(user_json, err) {
 		 if (err) {
 		     console.log(err);
@@ -271,6 +314,7 @@ app.post('/register_new_user',
 		     console.log(err);
 		     response.send("Error encrypting password.");
 		 } else {
+
 		     var user_form_data = {
 			 username: request.body.user.username,
 			 firstname: request.body.user.firstname,

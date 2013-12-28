@@ -25,7 +25,7 @@ var Constants = {
   FUNDING_TARGET: 40.00,
   FUNDING_UNIT_SYMBOL: "mBTC",
   FUNDING_SI_SCALE: 1000,
-  FUNDING_END_DATE: new Date("December 1, 2013"),
+  FUNDING_END_DATE: new Date("January 19, 2014"),
   PRODUCT_NAME: "FanBooker: Development Version",
   PRODUCT_SHORT_DESCRIPTION: "Covering cultural deficits through crowdfunding.",
   TWITTER_USERNAME: "nodejs",
