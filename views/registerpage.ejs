@@ -9,7 +9,6 @@
     <script src="js/angular.min.js" ></script>
     <script src="js/controllers.js"></script>
     <script src="js/google-analytics.js"></script>
-    <!-- <script src="js/validator-min.js"></script> -->
     <script src="https://coinbase.com/assets/button.js"></script>
     <script src="js/coinbase-post-payment.js"></script>
     <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic" rel="stylesheet" type="text/css">
@@ -27,7 +26,8 @@
       <h2>Please register</h2><hr>
       <div class="span5 register-new-user">
 	<div id="register-form">
-	  <p class="remark">All fields are required.</p>
+	  <p class="remark smallfont">All fields are required.<br>
+	  Please only use letters for your username.</p>
 	  <form action="/register_new_user" method="post">
 	    <div id="form-alerts">
 	      <% if (message) { %>

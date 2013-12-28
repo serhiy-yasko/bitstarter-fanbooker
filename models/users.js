@@ -1,17 +1,46 @@
 var async = require('async');
 var util = require('util');
 var uu = require('underscore');
-var bcrypt = require('bcrypt-nodejs');
+//var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
-	username: {type: DataTypes.STRING, unique: true, allowNull: false},
-	email: {type: DataTypes.STRING, unique: true, allowNull: false, validate: {isEmail: true}},
-	password: {type: DataTypes.STRING, allowNull: false},
-	firstName: {type: DataTypes.STRING, allowNull: false},
-	lastName: {type: DataTypes.STRING, allowNull: false},
-	displayName: {type: DataTypes.STRING, allowNull: true},
-	privilege: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0}
+	username: {
+	    type: DataTypes.STRING, 
+	    unique: true, 
+	    allowNull: false,
+	    validate: {isAlpha: true}
+	},
+	email: {
+	    type: DataTypes.STRING, 
+	    unique: true, 
+	    allowNull: false, 
+	    validate: {isEmail: true}
+	},
+	password: {
+	    type: DataTypes.STRING, 
+	    allowNull: false
+	},
+	firstName: {
+	    type: DataTypes.STRING, 
+	    allowNull: false,
+	    validate: {isAlpha: true}
+	},
+	lastName: {
+	    type: DataTypes.STRING, 
+	    allowNull: false,
+	    validate: {isAlpha: true}
+	},
+	displayName: {
+	    type: DataTypes.STRING, 
+	    allowNull: true,
+	    validate: {isAlpha: true}
+	},
+	privilege: {
+	    type: DataTypes.INTEGER, 
+	    allowNull: false, 
+	    defaultValue: 0
+	}
     }, {
 	paranoid: true,
 	classMethods: {

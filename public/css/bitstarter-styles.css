@@ -161,12 +161,15 @@ p.lead {
     line-height: 1.5em;
 }
 .remark {
-  color: #7F7F7F; 
-  font-style: italic; 
+    color: #7F7F7F; 
+    font-style: italic; 
+}
+.smallfont {
+    font-size: .8em;
 }
 p {
-  font-size: 1.15em;
-  line-height: 1.65em;
+    font-size: 1.15em;
+    line-height: 1.65em;
 }
 div#home-bg {
     background-image: url("../img/home-bg-1.jpg");
