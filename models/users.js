@@ -1,7 +1,6 @@
 var async = require('async');
 var util = require('util');
 var uu = require('underscore');
-//var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("User", {
@@ -9,13 +8,13 @@ module.exports = function(sequelize, DataTypes) {
 	    type: DataTypes.STRING, 
 	    unique: true, 
 	    allowNull: false,
-	    validate: {isAlpha: true}
+	    validate: {is: {args: ["[a-z0-9_]",'i'], message: "Please only use letters, numbers and underscores"}}
 	},
 	email: {
 	    type: DataTypes.STRING, 
 	    unique: true, 
 	    allowNull: false, 
-	    validate: {isEmail: true}
+	    validate: {isEmail: {args: true, message: "Please provide your actual email"}}
 	},
 	password: {
 	    type: DataTypes.STRING, 
@@ -24,17 +23,17 @@ module.exports = function(sequelize, DataTypes) {
 	firstName: {
 	    type: DataTypes.STRING, 
 	    allowNull: false,
-	    validate: {isAlpha: true}
+	    validate: {isAlpha: {args: true, message: "Please state your real first name"}}
 	},
 	lastName: {
 	    type: DataTypes.STRING, 
 	    allowNull: false,
-	    validate: {isAlpha: true}
+	    validate: {isAlpha: {args: true, message: "Please state your real last name"}}
 	},
 	displayName: {
 	    type: DataTypes.STRING, 
 	    allowNull: true,
-	    validate: {isAlpha: true}
+	    validate: {isAlpha: {args: true, message: "Please only use letters"}}
 	},
 	privilege: {
 	    type: DataTypes.INTEGER, 

@@ -118,6 +118,7 @@ var accountfn = function(request, response) {
     response.render("accountpage", {
         title: "User Account",
         user: request.user,
+	message: request.session.messages,
         name: Constants.APP_NAME}); 
 };
 
@@ -144,22 +145,6 @@ var refresh_orderfn = function(request, response) {
 	}
     };
     global.db.Order.refreshFromCoinbase(cb);
-};
-
-var suggest_event = function(request, response) {
-    var cb = function(err) {
-	if(err) {
-	    console.log(err);
-	} else {
-	    return response.redirect("/account");
-	}
-    };
-    var event_form_data = {
-        performer: request.body.performer,
-        city: request.body.city,
-        comment: request.body.comment
-    };
-    global.db.Event.addEvent(event_form_data, cb);
 };
 
 /*
@@ -198,7 +183,6 @@ var ROUTES = define_routes({
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,
-    '/suggest_event': suggest_eventfn,
     '/refresh_orders': refresh_orderfn
 });
 

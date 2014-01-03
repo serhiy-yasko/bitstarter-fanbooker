@@ -287,10 +287,36 @@ app.post('/sign_in',
 				   })(request, response, next);
 });
 
+app.post('/suggest_event',
+	function(request, response) {
+	    var cb = function(err) {
+		if(err) {
+		    console.log(err);
+		    request.session.messages = err;
+		} else {
+		    //global.db.Event.setInitiator(global.db.Event);
+		    response.redirect("/account");
+		}
+	    };
+	    var event_form_data = {
+		performer: request.body.performer,
+		city: request.body.city,
+		comment: request.body.comment
+	    };
+	    global.db.Event.addEvent(event_form_data, cb);
+});
+
 app.get('/logout', function(request, response) {
     request.logout();
     response.redirect('/');
 });
+
+// SEQUELIZE GEAR
+
+global.db.Event.hasOne(global.db.User, {as: 'Initiator', foreignKey: 'UserId'});
+global.db.User.hasMany(global.db.Event);
+global.db.Event.hasMany(global.db.Performer);
+global.db.Venue.hasMany(global.db.Event);
 
 global.db.sequelize.sync().complete(function(err) {
     if (err) {

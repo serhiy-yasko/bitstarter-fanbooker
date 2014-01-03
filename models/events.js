@@ -8,12 +8,12 @@ module.exports = function(sequelize, DataTypes) {
 	    type: DataTypes.STRING, 
 	    unique: true, 
 	    allowNull: false,
-	    validate: {isAlphanumeric: true}
+	    validate: {is: {args: ["[a-z ]",'i'], message: "Please only use letters"}}
 	},
 	city: {
 	    type: DataTypes.STRING, 
 	    allowNull: false, 
-	    validate: {isAlpha: true}
+	    validate: {isAlpha: {args: true, message: "Please state a city the event should take place in"}}
 	},
 	venue: {
 	    type: DataTypes.STRING, 
@@ -29,10 +29,8 @@ module.exports = function(sequelize, DataTypes) {
         },
 	comment: {
 	    type: DataTypes.TEXT, 
-	    allowNull: true,
-	    validate: {isAlphanumeric: true}
+	    allowNull: true
 	}
-    }
     }, {
 	paranoid: true,
 	classMethods: {
@@ -43,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
 	    allToJSON: function(successcb, errcb) {
                 this.findAll()
                  .success(function(events) {
-                        successcb(uu.invoke(users, 'toJSON'));
+                        successcb(uu.invoke(events, 'toJSON'));
                  })
                  .error(errcb);
             },
@@ -59,7 +57,8 @@ module.exports = function(sequelize, DataTypes) {
                
 		_Event.find(
 		    { where: 
-		      { email: user.email }
+		      { performer: event.performer,
+			city: event.city }
 		    })
 		    .success(function(event_instance) {
 			
