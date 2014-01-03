@@ -70,6 +70,13 @@ var orderfn = function(request, response) {
     global.db.Order.allToJSON(successcb, errcb);
 };
 
+var eventsfn = function(request, response) {
+    response.render("eventspage", {
+	title: "Events Chart",
+	user: request.user,
+	name: Constants.APP_NAME});
+};
+
 var agenciesfn = function(request, response) {
     response.render("agenciespage", {
 	title: "Promo Agencies",
@@ -139,6 +146,22 @@ var refresh_orderfn = function(request, response) {
     global.db.Order.refreshFromCoinbase(cb);
 };
 
+var suggest_event = function(request, response) {
+    var cb = function(err) {
+	if(err) {
+	    console.log(err);
+	} else {
+	    return response.redirect("/account");
+	}
+    };
+    var event_form_data = {
+        performer: request.body.performer,
+        city: request.body.city,
+        comment: request.body.comment
+    };
+    global.db.Event.addEvent(event_form_data, cb);
+};
+
 /*
    Helper functions which create a ROUTES array for export and use by web.js
 
@@ -167,6 +190,7 @@ var ROUTES = define_routes({
     '/': indexfn,
     '/about': aboutfn,
     '/orders': orderfn,
+    '/events': eventsfn,
     '/agencies': agenciesfn,
     '/venues': venuesfn,
     '/register': registerfn,
@@ -174,6 +198,7 @@ var ROUTES = define_routes({
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,
+    '/suggest_event': suggest_eventfn,
     '/refresh_orders': refresh_orderfn
 });
 

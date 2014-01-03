@@ -24,8 +24,43 @@
     
     <div class="container">
       <h2>Welcome to Your FanBooker Account!</h2><hr>
-      <p><i>Name:</i> <%= user.displayName %></p>
-      <p><i>Email:</i> <%= user.email %></p>
+      <div class="span5 offset1">
+	<p><i>Name:</i> <%= user.displayName %></p>
+	<p><i>Email:</i> <%= user.email %></p>
+	<hr>
+	<p><i>Your Suggested Events:</i></p>
+      </div> <!-- end of span5 -->
+      <div class="span5">
+	<h3>Suggest An Event</h3>
+	<div id="event-form">
+          <form action="/suggest_event" method="post">
+            <div id="form-alerts">
+              <% if (message) { %>
+              <p><%= message %></p>
+              <% } %>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Band / Artist / Performer:</label>
+              <input class="form-control" type="text" value="" name="performer">
+              <span class="help-block"></span>
+            </div>
+	    <div class="form-group">
+              <label class="control-label">City / Town:</label>
+              <input class="form-control" type="text" value="" name="city">
+              <span class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Your Comment (optional):</label>
+              <textarea class="form-control" type="text" rows="10" cols="50" name="comment"></textarea>
+              <span class="help-block"></span>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-submit" type="submit">I Demand!</button>
+            </div>
+          </form>
+        </div> <!-- end of event-form -->
+
+      </div> <!-- end of span5 -->
     </div> <!-- end of container -->
   </body>
 </html>

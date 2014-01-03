@@ -4,43 +4,41 @@ var uu = require('underscore');
 //var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define("User", {
-	username: {
+    return sequelize.define("Venue", {
+	name: {
 	    type: DataTypes.STRING, 
 	    unique: true, 
 	    allowNull: false,
-	    validate: {isAlpha: true}
+	    validate: {isAlphanumeric: true}
 	},
+	address: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+	phone: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+	website: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
 	email: {
 	    type: DataTypes.STRING, 
-	    unique: true, 
-	    allowNull: false, 
-	    validate: {isEmail: true}
+	    allowNull: true 
 	},
-	password: {
+	contactPerson: {
 	    type: DataTypes.STRING, 
 	    allowNull: false
 	},
-	firstName: {
-	    type: DataTypes.STRING, 
-	    allowNull: false,
-	    validate: {isAlpha: true}
-	},
-	lastName: {
-	    type: DataTypes.STRING, 
-	    allowNull: false,
-	    validate: {isAlpha: true}
-	},
-	displayName: {
-	    type: DataTypes.STRING, 
-	    allowNull: true,
-	    validate: {isAlpha: true}
-	},
-	privilege: {
-	    type: DataTypes.INTEGER, 
-	    allowNull: false, 
-	    defaultValue: 0
-	}
+	venueType: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+	volume: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }
     }, {
 	paranoid: true,
 	classMethods: {
@@ -93,6 +91,7 @@ module.exports = function(sequelize, DataTypes) {
                             var new_user_instance = _User.build({
 				username: user.username,
 				email: user.email,
+				// email: user.emails[0].value,
 				password: user.password,
 				firstName: user.firstname,
 				lastName: user.lastname,
