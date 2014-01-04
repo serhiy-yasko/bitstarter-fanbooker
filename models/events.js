@@ -69,6 +69,9 @@ module.exports = function(sequelize, DataTypes) {
                             var new_event_instance = _Event.build({
 				performer: event.performer,
 				city: event.city,
+				venue: event.venue,
+				agency: event.agency,
+				date: event.date,
 				comment: event.comment
                             });
 			    

@@ -299,16 +299,33 @@ app.post('/suggest_event',
 			    throw err;
 			}			
 		    });
-		    concole.log('The record was saved');
+		    console.log('The record was saved');
 		    return response.redirect('/account');
 		}
 	    };
 	    var event_form_data = {
 		performer: request.body.performer,
 		city: request.body.city,
+		venue: '',
+		agency: '',
+		date: '',
 		comment: request.body.comment
 	    };
+	    var event_initiator = function(id, done) {
+		findById(request.user.id, function (err, user) {
+		    done(err, user);
+		});
+	    };
+	    console.log(event_initiator);
 	    global.db.Event.addEvent(event_form_data, cb);
+	    global.db.Event.setUser(event_initiator).success(function(){
+		console.log('The event initiator is set');
+            });
+	    global.db.sequelize.sync().complete(function(err) {
+		if (err) {
+		    throw err;
+		}			
+	    });
 });
 
 app.get('/logout', function(request, response) {
@@ -318,10 +335,11 @@ app.get('/logout', function(request, response) {
 
 // SEQUELIZE GEAR
 
-global.db.Event.hasOne(global.db.User, {as: 'Initiator'});
 global.db.User.hasMany(global.db.Event);
-global.db.Event.hasMany(global.db.Performer);
-global.db.Venue.hasMany(global.db.Event);
+global.db.Event.hasOne(global.db.User);
+
+//global.db.Event.hasMany(global.db.Performer);
+//global.db.Venue.hasMany(global.db.Event);
 
 global.db.sequelize.sync().complete(function(err) {
     if (err) {
