@@ -97,7 +97,7 @@ module.exports = function(sequelize, DataTypes) {
 				lastName: user.lastname,
 				displayName: user.username,
 				privilege: 1
-                            });
+			    });
 			    
                             new_user_instance.save()
 				.success(function() {

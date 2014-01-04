@@ -6,7 +6,6 @@ module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Event", {
 	performer: {
 	    type: DataTypes.STRING, 
-	    unique: true, 
 	    allowNull: false,
 	    validate: {is: {args: ["[a-z ]",'i'], message: "Please only use letters"}}
 	},
@@ -56,9 +55,9 @@ module.exports = function(sequelize, DataTypes) {
                 var _Event = this;
                
 		_Event.find(
-		    { where: 
-		      { performer: event.performer,
-			city: event.city }
+		    { where: ['performer=? and city=?', event.performer, event.city] 
+		      //{ performer: event.performer,
+		      //city: event.city }
 		    })
 		    .success(function(event_instance) {
 			

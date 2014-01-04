@@ -292,10 +292,15 @@ app.post('/suggest_event',
 	    var cb = function(err) {
 		if(err) {
 		    console.log(err);
-		    request.session.messages = err;
+		    console.log('The record was not saved');
 		} else {
-		    //global.db.Event.setInitiator(global.db.Event);
-		    response.redirect("/account");
+		    global.db.sequelize.sync().complete(function(err) {
+			if (err) {
+			    throw err;
+			}			
+		    });
+		    concole.log('The record was saved');
+		    return response.redirect('/account');
 		}
 	    };
 	    var event_form_data = {
@@ -313,7 +318,7 @@ app.get('/logout', function(request, response) {
 
 // SEQUELIZE GEAR
 
-global.db.Event.hasOne(global.db.User, {as: 'Initiator', foreignKey: 'UserId'});
+global.db.Event.hasOne(global.db.User, {as: 'Initiator'});
 global.db.User.hasMany(global.db.Event);
 global.db.Event.hasMany(global.db.Performer);
 global.db.Venue.hasMany(global.db.Event);
