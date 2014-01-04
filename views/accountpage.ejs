@@ -29,7 +29,25 @@
 	<p><i>Email:</i> <%= user.email %></p>
 	<hr>
 	<p><i>Your Suggested Events:</i></p>
+	<hr>
+	<table class="table table-striped">
+          <thead>
+            <th>Performer</th>
+            <th>City</th>
+            <th>Votes</th>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < events.length; i++) {%>
+               <tr>
+		 <td><%= events[i].performer %></td>
+		 <td><%= events[i].city %></td>
+		 <td><%= events[i].votes_counter %></td>
+	       </tr>
+               <% } %>
+          </tbody>
+	</table>
       </div> <!-- end of span5 -->
+      
       <div class="span5">
 	<h3>Suggest An Event</h3>
 	<div id="event-form">

@@ -23,11 +23,26 @@
     <% include navbar.ejs %>
     
     <div class="container">
-      <h2>Suggested Events (Contenders To Be Funded)</h2><hr>
-      <div class="span5 offset1">
-      </div>
-      <div class="span5">
-      </div>
-    </div>
+      <h2>Suggested Events</h2>
+      <h3>Contenders To Be Funded</h3><hr>
+      <table class="table table-striped">
+        <thead>
+          <th>Performer</th>
+          <th>City</th>
+          <th>Votes</th>
+	  <th></th>
+        </thead>
+        <tbody>
+          <% for(var i = 0; i < events.length; i++) {%>
+             <tr>
+               <td><%= events[i].performer %></td>
+               <td><%= events[i].city %></td>
+               <td><%= events[i].votes_counter %></td>
+	       <td><a href="/upvote_event" class="btn" name=<% events[i].id %>>Upvote</a></td>
+             </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div> <!-- end of container -->
   </body>
 </html>

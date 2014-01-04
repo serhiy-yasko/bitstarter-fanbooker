@@ -289,59 +289,26 @@ app.post('/sign_in',
 
 app.post('/suggest_event',
 	function(request, response) {
-	    var event_initiator = request.user;
-	    console.log(event_initiator);
 	    var cb = function(event_json, err) {
 		if (err) {
 		    console.log(err);
 		    console.log('The record was not saved');
 		}
-		
-		
-		console.log(event_json);
-		var event = JSON.parse(event_json);
-		console.log(event);
-		event.setInitiator(event_initiator).success(function(){
-		    console.log('The event initiator is set');
-		});
-		global.db.sequelize.sync().complete(function(err) {
-		    if (err) {
-			throw err;
-		    }			
-		});
-		
 		console.log('The record was saved');
 		return response.redirect('/account');
 	    };
-	    
 	    var event_form_data = {
 		performer: request.body.performer,
 		city: request.body.city,
 		venue: '',
 		agency: '',
 		date: '',
-		comment: request.body.comment
+		comment: request.body.comment,
+		vote_counter: 1,
+		initiator_id: request.user.id,
+		upvoters_ids: []
 	    };
-	    /*
-	    var event_initiator = function(id, done) {
-		findById(request.user.id, function (err, user) {
-		    done(err, user);
-		});
-	    };
-	    */
-	    
 	    global.db.Event.addEvent(event_form_data, cb);
-	    
-	    /*
-	    global.db.Event.setInitiator(event_initiator).success(function(){
-		console.log('The event initiator is set');
-            });
-	    global.db.sequelize.sync().complete(function(err) {
-		if (err) {
-		    throw err;
-		}			
-	    });
-	    */
 });
 
 app.get('/logout', function(request, response) {
@@ -351,15 +318,8 @@ app.get('/logout', function(request, response) {
 
 // SEQUELIZE GEAR
 
-global.db.User.hasMany(global.db.Event);
-global.db.Event.belongsTo(global.db.User, {as: 'Initiator'});
-//global.db.Event.hasOne(global.db.User, {as: 'Initiator'});
-
-//global.db.Event.hasOne(global.db.User, {as: 'Initiator'});
+//global.db.User.hasMany(global.db.Event);
 //global.db.Event.belongsTo(global.db.User, {as: 'Initiator'});
-
-//global.db.Event.hasMany(global.db.Performer);
-//global.db.Venue.hasMany(global.db.Event);
 
 global.db.sequelize.sync().complete(function(err) {
     if (err) {

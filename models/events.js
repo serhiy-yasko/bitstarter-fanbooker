@@ -29,6 +29,18 @@ module.exports = function(sequelize, DataTypes) {
 	comment: {
 	    type: DataTypes.TEXT, 
 	    allowNull: true
+	},
+	vote_counter: {
+	    type: DataTypes.INTEGER,
+	    allowNull: false
+	},
+	initiator_id: {
+	    type: DataTypes.INTEGER,
+	    allowNull: false
+	},
+	upvoters_ids: {
+	    type: DataTypes.ARRAY,
+	    allowNull: true
 	}
     }, {
 	paranoid: true,
@@ -72,7 +84,10 @@ module.exports = function(sequelize, DataTypes) {
 				venue: event.venue,
 				agency: event.agency,
 				date: event.date,
-				comment: event.comment
+				comment: event.comment,
+				vote_counter: event.vote_counter,
+				initiator_id: event.initiator_id,
+				upvoters_ids: event.upvoters_ids
                             });
 			    
                             new_event_instance.save()
@@ -86,6 +101,20 @@ module.exports = function(sequelize, DataTypes) {
 			}
                     });
  	    },
+	    findByUserId: function(user_initiator_id, cb) {
+                var _Event = this;
+                _Event.findAll(
+                    { where:
+                      { initiator_id: user_initiator_id }
+                    })
+                    .success(function(event_instances) {
+                        var events_json = JSON.stringify(event_instances);
+                        cb(events_json);
+                    })
+                    .error(function(err) {
+                        cb(err);
+                    });
+            },
 	    findEventByPerformer: function(event_performer, cb) {
                 var _Event = this;
                 _Event.find(
@@ -124,8 +153,8 @@ module.exports = function(sequelize, DataTypes) {
 	instanceMethods: {
 	    repr: function() {
 		return util.format(
-		    "Event <ID: %s Performer: %s City: %s Venue: %s Agency: %s Date: %s Comment: %s", 
-		    this.id, this.performer, this.city, this.venue, this.agency, this.date, this.comment);
+		    "Event <ID: %s Performer: %s City: %s Venue: %s Agency: %s Date: %s Comment: %s VoteCounter: %s InitiatorID: %s UpvotersIDs: %s", 
+		    this.id, this.performer, this.city, this.venue, this.agency, this.date, this.comment, this.vote_counter, this.initiator_id, this.upvoters_ids);
 	    }
 	}
     });

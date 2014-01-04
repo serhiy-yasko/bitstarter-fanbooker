@@ -63,6 +63,9 @@ var aboutfn = function(request, response) {
 var orderfn = function(request, response) {
     var successcb = function(orders_json) {
 	response.render("orderpage", {
+	    title: "Orders Chart",
+	    user: request.user,
+	    name: Constants.APP_NAME,
 	    orders: orders_json
 	});
     };
@@ -71,10 +74,16 @@ var orderfn = function(request, response) {
 };
 
 var eventsfn = function(request, response) {
-    response.render("eventspage", {
-	title: "Events Chart",
-	user: request.user,
-	name: Constants.APP_NAME});
+    var successcb = function(events_json) {
+	response.render("eventspage", {
+	    title: "Events Chart",
+	    user: request.user,
+	    name: Constants.APP_NAME,
+	    events: events_json
+	});
+    };
+    var errcb = build_errfn('Error retrieving events', response);
+    global.db.Event.allToJSON(successcb, errcb);
 };
 
 var agenciesfn = function(request, response) {
@@ -115,11 +124,25 @@ var contactfn = function(request, response) {
 };
 
 var accountfn = function(request, response) {
+    var cb = function(events_json, err) {
+	if (err) { console.log(err); }
+        response.render("accountpage", {
+            title: "User Account",
+            user: request.user,
+            name: Constants.APP_NAME,
+	    message: request.session.messages,
+            events: events_json
+        });
+    };
+    global.db.Event.findByUserId(request.user.id, cb);
+
+    /*
     response.render("accountpage", {
         title: "User Account",
         user: request.user,
 	message: request.session.messages,
         name: Constants.APP_NAME}); 
+    */	
 };
 
 var api_orderfn = function(request, response) {
@@ -145,6 +168,10 @@ var refresh_orderfn = function(request, response) {
 	}
     };
     global.db.Order.refreshFromCoinbase(cb);
+};
+
+var upvote_eventfn = function(request, response) {
+    
 };
 
 /*
@@ -183,7 +210,8 @@ var ROUTES = define_routes({
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,
-    '/refresh_orders': refresh_orderfn
+    '/refresh_orders': refresh_orderfn,
+    '/upvote_event': upvote_eventfn
 });
 
 module.exports = ROUTES;
