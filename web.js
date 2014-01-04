@@ -289,20 +289,31 @@ app.post('/sign_in',
 
 app.post('/suggest_event',
 	function(request, response) {
-	    var cb = function(err) {
-		if(err) {
+	    var event_initiator = request.user;
+	    console.log(event_initiator);
+	    var cb = function(event_json, err) {
+		if (err) {
 		    console.log(err);
 		    console.log('The record was not saved');
-		} else {
-		    global.db.sequelize.sync().complete(function(err) {
-			if (err) {
-			    throw err;
-			}			
-		    });
-		    console.log('The record was saved');
-		    return response.redirect('/account');
 		}
+		
+		
+		console.log(event_json);
+		var event = JSON.parse(event_json);
+		console.log(event);
+		event.setInitiator(event_initiator).success(function(){
+		    console.log('The event initiator is set');
+		});
+		global.db.sequelize.sync().complete(function(err) {
+		    if (err) {
+			throw err;
+		    }			
+		});
+		
+		console.log('The record was saved');
+		return response.redirect('/account');
 	    };
+	    
 	    var event_form_data = {
 		performer: request.body.performer,
 		city: request.body.city,
@@ -311,14 +322,18 @@ app.post('/suggest_event',
 		date: '',
 		comment: request.body.comment
 	    };
+	    /*
 	    var event_initiator = function(id, done) {
 		findById(request.user.id, function (err, user) {
 		    done(err, user);
 		});
 	    };
-	    console.log(event_initiator);
+	    */
+	    
 	    global.db.Event.addEvent(event_form_data, cb);
-	    global.db.Event.setUser(event_initiator).success(function(){
+	    
+	    /*
+	    global.db.Event.setInitiator(event_initiator).success(function(){
 		console.log('The event initiator is set');
             });
 	    global.db.sequelize.sync().complete(function(err) {
@@ -326,6 +341,7 @@ app.post('/suggest_event',
 		    throw err;
 		}			
 	    });
+	    */
 });
 
 app.get('/logout', function(request, response) {
@@ -336,7 +352,11 @@ app.get('/logout', function(request, response) {
 // SEQUELIZE GEAR
 
 global.db.User.hasMany(global.db.Event);
-global.db.Event.hasOne(global.db.User);
+global.db.Event.belongsTo(global.db.User, {as: 'Initiator'});
+//global.db.Event.hasOne(global.db.User, {as: 'Initiator'});
+
+//global.db.Event.hasOne(global.db.User, {as: 'Initiator'});
+//global.db.Event.belongsTo(global.db.User, {as: 'Initiator'});
 
 //global.db.Event.hasMany(global.db.Performer);
 //global.db.Venue.hasMany(global.db.Event);
