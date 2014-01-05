@@ -39,7 +39,7 @@ module.exports = function(sequelize, DataTypes) {
 	    allowNull: false
 	},
 	upvoters_ids: {
-	    type: DataTypes.ARRAY,
+	    type: DataTypes.ARRAY(DataTypes.INTEGER),
 	    allowNull: true
 	}
     }, {
@@ -50,11 +50,21 @@ module.exports = function(sequelize, DataTypes) {
 		    console.log("There are %s Events", c);});
 	    },
 	    allToJSON: function(successcb, errcb) {
-                this.findAll()
-                 .success(function(events) {
+                this.findAll({order: 'vote_counter DESC'})
+                    .success(function(events) {
                         successcb(uu.invoke(events, 'toJSON'));
-                 })
-                 .error(errcb);
+                    })
+                    .error(errcb);
+            },
+	    allByUserIdToJSON: function(user_initiator_id, cb) {
+                this.findAll(
+		    { where: {initiator_id: user_initiator_id} })
+                    .success(function(events) {
+                        cb(uu.invoke(events, 'toJSON'));
+                    })
+                    .error(function(err) {
+			cb(err);
+		    });
             },
 	    addAllFromJSON: function(events, errcb) {
                 var MAX_CONCURRENT_POSTGRES_QUERIES = 1;
@@ -101,20 +111,6 @@ module.exports = function(sequelize, DataTypes) {
 			}
                     });
  	    },
-	    findByUserId: function(user_initiator_id, cb) {
-                var _Event = this;
-                _Event.findAll(
-                    { where:
-                      { initiator_id: user_initiator_id }
-                    })
-                    .success(function(event_instances) {
-                        var events_json = JSON.stringify(event_instances);
-                        cb(events_json);
-                    })
-                    .error(function(err) {
-                        cb(err);
-                    });
-            },
 	    findEventByPerformer: function(event_performer, cb) {
                 var _Event = this;
                 _Event.find(

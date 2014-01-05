@@ -37,8 +37,8 @@
              <tr>
                <td><%= events[i].performer %></td>
                <td><%= events[i].city %></td>
-               <td><%= events[i].votes_counter %></td>
-	       <td><a href="/upvote_event" class="btn" name=<% events[i].id %>>Upvote</a></td>
+               <td><%= events[i].vote_counter %></td>
+	       <td><a href="/upvote_event" class="btn">Upvote</a></td>
              </tr>
           <% } %>
         </tbody>

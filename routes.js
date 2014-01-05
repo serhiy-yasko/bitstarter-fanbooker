@@ -74,7 +74,9 @@ var orderfn = function(request, response) {
 };
 
 var eventsfn = function(request, response) {
+    
     var successcb = function(events_json) {
+	console.log(events_json);
 	response.render("eventspage", {
 	    title: "Events Chart",
 	    user: request.user,
@@ -134,15 +136,7 @@ var accountfn = function(request, response) {
             events: events_json
         });
     };
-    global.db.Event.findByUserId(request.user.id, cb);
-
-    /*
-    response.render("accountpage", {
-        title: "User Account",
-        user: request.user,
-	message: request.session.messages,
-        name: Constants.APP_NAME}); 
-    */	
+    global.db.Event.allByUserIdToJSON(request.user.id, cb);
 };
 
 var api_orderfn = function(request, response) {
