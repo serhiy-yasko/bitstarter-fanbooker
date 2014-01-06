@@ -74,18 +74,11 @@ var orderfn = function(request, response) {
 };
 
 var eventsfn = function(request, response) {
-    
-    var successcb = function(events_json) {
-	console.log(events_json);
-	response.render("eventspage", {
-	    title: "Events Chart",
-	    user: request.user,
-	    name: Constants.APP_NAME,
-	    events: events_json
-	});
-    };
-    var errcb = build_errfn('Error retrieving events', response);
-    global.db.Event.allToJSON(successcb, errcb);
+    response.render("eventspage", {
+	title: "Events Chart",
+	user: request.user,
+	name: Constants.APP_NAME,
+    });    
 };
 
 var agenciesfn = function(request, response) {
@@ -139,6 +132,16 @@ var accountfn = function(request, response) {
     global.db.Event.allByUserIdToJSON(request.user.id, cb);
 };
 
+var api_eventfn = function(request, response) {
+    var successcb = function(events_json) {
+	console.log(events_json);
+	var data = events_json;
+	response.json(data);	
+    };
+    var errcb = build_errfn('Error retrieving API events', response);
+    global.db.Event.allToJSON(successcb, errcb);
+};
+
 var api_orderfn = function(request, response) {
     var successcb = function(totals) {
 	var data = uu.extend(totals,
@@ -162,10 +165,6 @@ var refresh_orderfn = function(request, response) {
 	}
     };
     global.db.Order.refreshFromCoinbase(cb);
-};
-
-var upvote_eventfn = function(request, response) {
-    
 };
 
 /*
@@ -204,8 +203,8 @@ var ROUTES = define_routes({
     '/contact': contactfn,
     '/account': accountfn,
     '/api/orders': api_orderfn,
-    '/refresh_orders': refresh_orderfn,
-    '/upvote_event': upvote_eventfn
+    '/api/events': api_eventfn,
+    '/refresh_orders': refresh_orderfn
 });
 
 module.exports = ROUTES;

@@ -22,7 +22,7 @@
     
     <% include navbar.ejs %>
     
-    <div class="container">
+    <div class="container" ng-controller="EventsCtrl" ng-show="!error">
       <h2>Suggested Events</h2>
       <h3>Contenders To Be Funded</h3><hr>
       <table class="table table-striped">
@@ -33,15 +33,13 @@
 	  <th></th>
         </thead>
         <tbody>
-          <% for(var i = 0; i < events.length; i++) {%>
-             <tr>
-               <td><%= events[i].performer %></td>
-               <td><%= events[i].city %></td>
-               <td><%= events[i].vote_counter %></td>
-	       <td><a href="/upvote_event" class="btn">Upvote</a></td>
-             </tr>
-          <% } %>
-        </tbody>
+	  <tr ng-repeat="event in events">
+	    <td>{{event.performer}}</td>
+	    <td>{{event.city}}</td>
+	    <td>{{event.vote_counter}}</td>
+	    <td><button class="btn" type="button" ng-click="upvoteEvent(event.id)">Upvote</button>
+	  </tr>
+	</tbody>
       </table>
     </div> <!-- end of container -->
   </body>

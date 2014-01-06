@@ -311,6 +311,20 @@ app.post('/suggest_event',
 	    global.db.Event.addEvent(event_form_data, cb);
 });
 
+app.post('/upvote_event',
+	function(request, response) {
+	    var up_event_id = request.param('upvote_event_id');
+	    var cb = function(event_json, err) {
+		if (err) {
+		    console.log(err);
+		    console.log('The record was not updated');
+		}
+		console.log('The record was updated');
+		return response.redirect('/events');
+	    };
+	    global.db.Event.incrementVoteCounter(up_event_id, cb);
+});
+
 app.get('/logout', function(request, response) {
     request.logout();
     response.redirect('/');

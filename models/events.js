@@ -111,6 +111,25 @@ module.exports = function(sequelize, DataTypes) {
 			}
                     });
  	    },
+	    incrementVoteCounter: function(event_id, cb) {
+                var _Event = this;
+                _Event.find(
+                    { where:
+                      { id: event_id }
+                    })
+                    .success(function(event_instance) {
+                        if (event_instance) {
+                            event_instance.increment('vote_counter', {by: 1})
+				.success(function() {
+				    var event_json = JSON.stringify(event_instance);
+				    cb(event_json);
+				})		                          
+                        }
+                    })
+                    .error(function(err) {
+                        cb(err);
+                    });
+            },
 	    findEventByPerformer: function(event_performer, cb) {
                 var _Event = this;
                 _Event.find(
