@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
 		    console.log("There are %s Events", c);});
 	    },
 	    allToJSON: function(successcb, errcb) {
-                this.findAll({order: 'vote_counter DESC'})
+                this.findAll({order: 'id ASC'})
                     .success(function(events) {
                         successcb(uu.invoke(events, 'toJSON'));
                     })
@@ -111,7 +111,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
                     });
  	    },
-	    incrementVoteCounter: function(event_id, cb) {
+	    incrementVoteCounter: function(event_id, upvoter_id, cb) {
                 var _Event = this;
                 _Event.find(
                     { where:
@@ -119,11 +119,22 @@ module.exports = function(sequelize, DataTypes) {
                     })
                     .success(function(event_instance) {
                         if (event_instance) {
-                            event_instance.increment('vote_counter', {by: 1})
-				.success(function() {
-				    var event_json = JSON.stringify(event_instance);
-				    cb(event_json);
-				})		                          
+			    var already_upvoted = uu.indexOf(event_instance.upvoters_ids, upvoter_id);
+			    if (already_upvoted == -1) { 
+				event_instance.increment('vote_counter', {by: 1})
+				    .success(function(event_instance) {
+					event_instance.upvoters_ids.push(upvoter_id);
+					uu.uniq(event_instance.upvoters_ids);
+					event_instance.save().success(function() {
+					    var event_json = JSON.stringify(event_instance);
+					    cb(event_json);
+					}).error(function(err) {
+					    cb(err);
+					});    
+				    });
+			    } else {
+				console.log("The user has already upvoted this event.");
+			    }               
                         }
                     })
                     .error(function(err) {

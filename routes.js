@@ -134,7 +134,6 @@ var accountfn = function(request, response) {
 
 var api_eventfn = function(request, response) {
     var successcb = function(events_json) {
-	console.log(events_json);
 	var data = events_json;
 	response.json(data);	
     };

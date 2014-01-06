@@ -322,7 +322,7 @@ app.post('/upvote_event',
 		console.log('The record was updated');
 		return response.redirect('/events');
 	    };
-	    global.db.Event.incrementVoteCounter(up_event_id, cb);
+	    global.db.Event.incrementVoteCounter(up_event_id, request.user.id, cb);
 });
 
 app.get('/logout', function(request, response) {
