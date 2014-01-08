@@ -6,7 +6,6 @@ module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Venue", {
 	name: {
 	    type: DataTypes.STRING, 
-	    unique: true, 
 	    allowNull: false
 	},
 	address: {
@@ -45,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
 		    console.log("There are %s Venues", c);});
 	    },
 	    allToJSON: function(successcb, errcb) {
-                this.findAll()
+                this.findAll({order: 'name ASC'})
                  .success(function(venues) {
                      successcb(uu.invoke(venues, 'toJSON'));
                  })

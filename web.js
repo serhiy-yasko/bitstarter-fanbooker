@@ -295,6 +295,7 @@ app.post('/sign_in',
 app.post('/suggest_event',
 	function(request, response) {
 	    var callback = function(performer_json, err) {
+		console.log(performer_json);
 		if (err) {
 		    console.log(err);
 		    console.log('The performer was not saved');

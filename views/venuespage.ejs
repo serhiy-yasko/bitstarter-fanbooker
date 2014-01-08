@@ -20,30 +20,19 @@
     
     <div class="container">
       <h2>Venues</h2><hr>
-
-      <div class="span5 offset1 copy copy-right">
-	<h3>BINGO Club</h3>
-	<dl class="venue-contact">
-	  <dt><strong>Address</strong></dt>
-	  <dd>Ukraine, 03115, Kyiv, Prospekt Pobedy 112</dd>
-	  <dt><strong>Phone</strong></dt>
-	  <dd>(044) 42-42-555</dd>
-	  <dt><strong>Website</strong></dt>
-	  <dd><a href="http://www.bingo.ua" target="_blank">www.bingo.ua</a></dd>
-	</dl>
+      <div class="span5 copy copy-right">
+	<% for(var i = 0; i < venues.length; i++) { %>
+	   <h3><%= venues[i].name %></h3>
+	   <dl class="venue-contact">
+	     <dt><strong>Address</strong></dt>
+	     <dd><%= venues[i].address %></dd>
+	     <dt><strong>Phone</strong></dt>
+	     <dd><%= venues[i].phone %></dd>
+	     <dt><strong>Website</strong></dt>
+	     <dd><a href="<%= venues[i].website %>" target="_blank"><%= venues[i].website %></a></dd>
+	   </dl>
+	   <% } %>
       </div>
-
-      <div class="span5 copy">
-	<h3>DIVAN Restaurant</h3>
-	<dl class="venue-contact">
-	  <dt><strong>Address</strong></dt>
-	  <dd>Ukraine, 01004, Kyiv, Ploscha Besarabska 2</dd>
-	  <dt><strong>Phone</strong></dt>
-	  <dd>+38 (067) 232-64-00</dd>
-	  <dt><strong>Website</strong></dt>
-	  <dd><a href="http://www.festrestdivan.com.ua" target="_blank">www.festrestdivan.com.ua</a></dd>
-	</dl>
-      </div>
-    </div>
+    </div> <!-- end of container -->
   </body>
 </html>

@@ -82,7 +82,6 @@ module.exports = function(sequelize, DataTypes) {
 		      //city: event.city }
 		    })
 		    .success(function(event_instance) {
-			
 			if (event_instance) {
                             // already exists
 			    var event_json = JSON.stringify(event_instance);

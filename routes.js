@@ -9,6 +9,48 @@ var build_errfn = function(errmsg, response) {
     };
 };
 
+global.db.Venue.bulkCreate([
+    { name: 'BINGO Club',
+      address: 'Ukraine, 03115, Kyiv, Prospekt Pobedy 112',
+      phone: '+38 (044) 42-42-555',
+      website: 'http://www.bingo.ua',
+      email: '',
+      contactPerson: '',
+      venueType: 'club',
+      volume: '' },
+    { name: 'DIVAN Restaurant',
+      address: 'Ukraine, 01004, Kyiv, Ploscha Besarabska 2',
+      phone: '+38 (067) 232-64-00',
+      website: 'http://www.festrestdivan.com.ua',
+      email: '',
+      contactPerson: '',
+      venueType: 'restaurant',
+      volume: '' }
+]).success(function() {
+    console.log("Venues are added to the database.");
+}).error(function(err) {
+    console.log(err);
+});
+
+global.db.Agency.bulkCreate([
+    { name: 'AZH Promo',
+      address: '',
+      phone: '+38 (097) 903-09-28',
+      website: 'http://promo.azh.com.ua/',
+      email: 'promo@azh.com.ua',
+      contactPerson: '' },
+    { name: 'FIGHT Music',
+      address: '',
+      phone: '+38 (050) 334-90-20',
+      website: 'http://www.fightmusic.com.ua/',
+      email: 'fight@fightmusic.com.ua',
+      contactPerson: '' }
+]).success(function() {
+    console.log("Agencies added to the database.");
+}).error(function(err) {
+    console.log(err);
+});
+
 /*
    Define the routes for the app, i.e. the functions
    which are executed once specific URLs are encountered.
@@ -82,28 +124,29 @@ var eventsfn = function(request, response) {
 };
 
 var agenciesfn = function(request, response) {
-    response.render("agenciespage", {
-	title: "Promo Agencies",
-	user: request.user,
-	name: Constants.APP_NAME});
-    
-    /*
-    global.db.Agency.bulkCreate([
-	{ name: 'AZH Promo', address: '', phone: '+38 (097) 903-09-28', website: 'http://promo.azh.com.ua/', email: 'promo@azh.com.ua', contactPerson: '' }
-	{ name: 'FIGHT Music', address: '', phone: '+38 (050) 334-90-20', website: 'http://www.fightmusic.com.ua/', email: 'fight@fightmusic.com.ua', contactPerson: '' }
-    ]).success(function() {
-	Agency.findAll().success(function(agencies) {
-            console.log(agencies);
-	})
-    })
-    */
+    var successcb = function(agencies_json) {
+	response.render("agenciespage", {
+	    title: "Promo Agencies",
+	    user: request.user,
+	    name: Constants.APP_NAME,
+	    agencies: agencies_json
+	});
+    };
+    var errcb = build_errfn('Error retrieving the list of agencies', response);
+    global.db.Agency.allToJSON(successcb, errcb); 
 };
 
 var venuesfn = function(request, response) {
-    response.render("venuespage", {
-	title: "Venues & Clubs",
-	user: request.user,
-	name: Constants.APP_NAME});
+    var successcb = function(venues_json) {
+	response.render("venuespage", {
+	    title: "Venues & Clubs",
+	    user: request.user,
+	    name: Constants.APP_NAME,
+	    venues: venues_json
+	});
+    };
+    var errcb = build_errfn('Error retrieving the list of venues', response);
+    global.db.Venue.allToJSON(successcb, errcb);   
 };
 
 var registerfn = function(request, response) {

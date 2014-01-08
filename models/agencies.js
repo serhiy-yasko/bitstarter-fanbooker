@@ -6,7 +6,6 @@ module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Agency", {
 	name: {
             type: DataTypes.STRING,
-            unique: true,
             allowNull: false
         },
         address: {
@@ -38,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
 		});
 	    },
 	    allToJSON: function(successcb, errcb) {
-                this.findAll()
+                this.findAll({order: 'name ASC'})
                  .success(function(agencies) {
                         successcb(uu.invoke(agencies, 'toJSON'));
                  })

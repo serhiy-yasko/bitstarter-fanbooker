@@ -20,30 +20,19 @@
     
     <div class="container">
       <h2>Promo Agencies</h2><hr>
-
-      <div class="span5 offset1 copy copy-right">
-	<h3>AZH Promo</h3>
-	<dl class="agency-contact">
-	  <dt><strong>Phone</strong></dt>
-	  <dd>+38 (097) 903-09-28 | +38 (067) 136-83-87</dd>
-	  <dt><strong>Email</strong></dt>
-	  <dd>promo@azh.com.ua</dd>
-	  <dt><strong>Website</strong></dt>
-	  <dd><a href="http://promo.azh.com.ua" target="_blank">promo.azh.com.ua</a></dd>
-	</dl>
+      <div class="span5 copy copy-right">
+	<% for(var i = 0; i < agencies.length; i++) {%>
+	   <h3><%= agencies[i].name %></h3>
+	   <dl class="agency-contact">
+	     <dt><strong>Phone</strong></dt>
+	     <dd><%= agencies[i].phone %></dd>
+	     <dt><strong>Email</strong></dt>
+	     <dd><%= agencies[i].email %></dd>
+	     <dt><strong>Website</strong></dt>
+	     <dd><a href="<%= agencies[i].website %>" target="_blank"><%= agencies[i].website %></a></dd>
+	   </dl>
+        <% } %>
       </div>
-
-      <div class="span5 copy">
-	<h3>FIGHT Music</h3>
-	<dl class="venue-contact">
-	  <dt><strong>Phone</strong></dt>
-	  <dd>+38 (050) 334-90-20</dd>
-	  <dt><strong>Email</strong></dt>
-	  <dd>fight@fightmusic.com.ua</dd>
-	  <dt><strong>Website</strong></dt>
-	  <dd><a href="http://www.fightmusic.com.ua" target="_blank">www.fightmusic.com.ua</a></dd>
-	</dl>
-      </div>
-    </div>
+    </div> 
   </body>
 </html>
