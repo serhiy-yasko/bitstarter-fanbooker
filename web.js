@@ -4,7 +4,6 @@ var express = require('express')
   , async   = require('async')
   , passport = require('passport')
   , bcrypt = require('bcrypt-nodejs')
-  , simplesmtp = require('simplesmtp')
   , nodemailer = require('nodemailer')
   , LocalStrategy = require('passport-local').Strategy
   //, GoogleStrategy = require('passport-google').Strategy
@@ -295,7 +294,6 @@ app.post('/sign_in',
 app.post('/suggest_event',
 	function(request, response) {
 	    var callback = function(performer_json, err) {
-		console.log(performer_json);
 		if (err) {
 		    console.log(err);
 		    console.log('The performer was not saved');
@@ -308,8 +306,9 @@ app.post('/suggest_event',
 		    console.log('The event was not saved');
 		}
 		console.log('The event was saved');
+		var event = JSON.parse(event_json);
 		var new_performer_data = {
-		    name: event_json.performer,
+		    name: event.performer,
                     email: '',
                     address: '',
                     contactPerson: '',
@@ -394,22 +393,6 @@ global.db.sequelize.sync().complete(function(err) {
 		http.createServer(app).listen(app.get('port'), function() {
 		    console.log("Listening on " + app.get('port'));
 		});
-
-		/*
-		simplesmtp.createSimpleServer({SMTPBanner:"My Server", debug: true}, function(request) {
-                    process.stdout.write("\r\nNew Mail:\r\n");
-                    request.on("data", function(chunk) {
-                        process.stdout.write(chunk);
-                    });
-                    request.accept();
-                }).listen(25, function(err) {
-                    if(!err) { console.log("SMTP server listening on port 25"); }
-                    else {
-                        console.log("Could not start server on port 25. Ports under 1000 require root privileges.");
-                        console.log(err.message);
-                    }
-                });
-		*/
 
 		// Start a simple daemon to refresh Coinbase orders periodically
 		setInterval(function() {
