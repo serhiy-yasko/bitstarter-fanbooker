@@ -1,19 +1,17 @@
 var async = require('async');
 var util = require('util');
 var uu = require('underscore');
-//var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Venue", {
 	name: {
 	    type: DataTypes.STRING, 
 	    unique: true, 
-	    allowNull: false,
-	    validate: {isAlphanumeric: true}
+	    allowNull: false
 	},
 	address: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
 	phone: {
             type: DataTypes.STRING,
@@ -29,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
 	},
 	contactPerson: {
 	    type: DataTypes.STRING, 
-	    allowNull: false
+	    allowNull: true
 	},
 	venueType: {
             type: DataTypes.STRING,
@@ -42,115 +40,64 @@ module.exports = function(sequelize, DataTypes) {
     }, {
 	paranoid: true,
 	classMethods: {
-	    numUsers: function() {
+	    numVenues: function() {
 		this.count().success(function(c) {
-		    console.log("There are %s Users", c);});
+		    console.log("There are %s Venues", c);});
 	    },
 	    allToJSON: function(successcb, errcb) {
                 this.findAll()
-                 .success(function(users) {
-                        successcb(uu.invoke(users, 'toJSON'));
+                 .success(function(venues) {
+                     successcb(uu.invoke(venues, 'toJSON'));
                  })
                  .error(errcb);
             },
-	    addAllFromJSON: function(users, errcb) {
+	    addAllFromJSON: function(venues, errcb) {
                 var MAX_CONCURRENT_POSTGRES_QUERIES = 1;
-                async.eachLimit(users,
+                async.eachLimit(venues,
                                 MAX_CONCURRENT_POSTGRES_QUERIES,
-                                this.addUserAccount.bind(this), errcb);
+                                this.addVenue.bind(this), errcb);
             },
-            addUserAccount: function(user_obj, cb) {
-		var user = user_obj;
-                var _User = this;
-               
-		/*
-		_User.findOrCreate(
-		    { email: user.emails[0].value },
-		    { displayName: user.displayName })
-		.success(function(user_instance, created) {
-		    console.log(user_instance.values),
-		    console.log(created)		    
-		})
-		.error(function(err) {
-		    cb(err);
-		});
-		*/
-
-		_User.find(
+            addVenue: function(venue_obj, cb) {
+		var venue = venue_obj;
+                var _Venue = this;
+               	_Venue.find(
 		    { where: 
-		      { email: user.email }
+		      { name: venue.name }
 		    })
-		    .success(function(user_instance) {
-			
-			if (user_instance) {
+		    .success(function(venue_instance) {
+			if (venue_instance) {
                             // already exists
-			    var user_json = JSON.stringify(user_instance);
-			    cb(user_json);
+			    var venue_json = JSON.stringify(venue_instance);
+			    cb(venue_json);
 			} else {
-			    			    
-                            var new_user_instance = _User.build({
-				username: user.username,
-				email: user.email,
-				// email: user.emails[0].value,
-				password: user.password,
-				firstName: user.firstname,
-				lastName: user.lastname,
-				displayName: user.username,
-				privilege: 1
+			    var new_venue_instance = _Venue.build({
+				name: venue.name,
+				address: venue.address,
+				phone: venue.phone,
+				website: venue.website,
+				email: venue.email,
+				contactPerson: venue.contactPerson,
+				venueType: venue.venueType,
+				volume: venue.volume
                             });
-			    
-                            new_user_instance.save()
+			    new_venue_instance.save()
 				.success(function() {
-				    var user_json = JSON.stringify(new_user_instance);
-				    cb(user_json);
+				    var venue_json = JSON.stringify(new_venue_instance);
+				    cb(venue_json);
 				})
 				.error(function(err) {
 				    cb(err);
 				});
 			}
                     });
- 	    },
-	    findAccountByEmail: function(user_email, cb) {
-                var _User = this;
-		_User.find(
-                    { where:
-                      { email: user_email }
-                    })
-                    .success(function(user_instance) {
-                        if (user_instance) {
-                            // already exists
-                            var user_json = JSON.stringify(user_instance);
-                            cb(user_json);
-			}
-		    })
-		    .error(function(err) {
-			cb(err);
-		    });
-	    },
-	    findAccountById: function(user_id, cb) {
-                var _User = this;
-                _User.find(
-                    { where:
-                      { id: user_id }
-                    })
-                    .success(function(user_instance) {
-                        if (user_instance) {
-                            // already exists
-                            var user_json = JSON.stringify(user_instance);
-                            cb(user_json);
-                        }
-                    })
-                    .error(function(err) {
-                        cb(err);
-                    });
-            }
+ 	    }
 	},
 	instanceMethods: {
 	    repr: function() {
 		return util.format(
-		    "User <ID: %s Username: %s Email: %s Password: %s FirstName: %s LastName: %s DisplayName: %s Privilege: %s " +
-			"Created: %s Updated:%s", this.id, this.username, this.email,
-		    this.password, this.firstName, this.lastName, this.displayName, this.privilege, this.createdAt, this.updatedAt);
+		    "Venue <ID: %s Name: %s Address: %s Phone: %s Website: %s Email: %s ContactPerson: %s VenueType: %s Volume: %s " +
+			"Created: %s Updated:%s", this.id, this.name, this.address,
+		    this.phone, this.website, this.email, this.contactPerson, this.venueType, this.volume, this.createdAt, this.updatedAt);
 	    }
 	}
     });

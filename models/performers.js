@@ -1,20 +1,19 @@
 var async = require('async');
 var util = require('util');
 var uu = require('underscore');
-//var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Performer", {
 	name: {
 	    type: DataTypes.STRING, 
 	    unique: true, 
-	    allowNull: false,
-	    validate: {isAlphanumeric: true}
+	    allowNull: false
+	    //validate: {is: {args: ["[a-z ]",'i']}}
 	},
 	email: {
 	    type: DataTypes.STRING, 
-	    allowNull: false, 
-	    validate: {isEmail: true}
+	    allowNull: true 
+	    //validate: {isEmail: true}
 	},
 	address: {
 	    type: DataTypes.STRING, 
@@ -22,124 +21,71 @@ module.exports = function(sequelize, DataTypes) {
 	},
 	contactPerson: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
 	performerType: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         }
     }, {
 	paranoid: true,
 	classMethods: {
-	    numUsers: function() {
+	    numPerformers: function() {
 		this.count().success(function(c) {
-		    console.log("There are %s Users", c);});
+		    console.log("There are %s Performers", c);});
 	    },
 	    allToJSON: function(successcb, errcb) {
                 this.findAll()
-                 .success(function(users) {
-                        successcb(uu.invoke(users, 'toJSON'));
+                 .success(function(performers) {
+                        successcb(uu.invoke(performers, 'toJSON'));
                  })
                  .error(errcb);
             },
-	    addAllFromJSON: function(users, errcb) {
+	    addAllFromJSON: function(performers, errcb) {
                 var MAX_CONCURRENT_POSTGRES_QUERIES = 1;
-                async.eachLimit(users,
+                async.eachLimit(performers,
                                 MAX_CONCURRENT_POSTGRES_QUERIES,
-                                this.addUserAccount.bind(this), errcb);
+                                this.addPerformer.bind(this), errcb);
             },
-            addUserAccount: function(user_obj, cb) {
-		var user = user_obj;
-                var _User = this;
-               
-		/*
-		_User.findOrCreate(
-		    { email: user.emails[0].value },
-		    { displayName: user.displayName })
-		.success(function(user_instance, created) {
-		    console.log(user_instance.values),
-		    console.log(created)		    
-		})
-		.error(function(err) {
-		    cb(err);
-		});
-		*/
-
-		_User.find(
+            addPerformer: function(performer_obj, cb) {
+		var performer = performer_obj;
+                var _Performer = this;
+               	
+		_Performer.find(
 		    { where: 
-		      { email: user.email }
+		      { name: performer.name }
 		    })
-		    .success(function(user_instance) {
-			
-			if (user_instance) {
+		    .success(function(performer_instance) {
+			if (performer_instance) {
                             // already exists
-			    var user_json = JSON.stringify(user_instance);
-			    cb(user_json);
-			} else {
-			    			    
-                            var new_user_instance = _User.build({
-				username: user.username,
-				email: user.email,
-				// email: user.emails[0].value,
-				password: user.password,
-				firstName: user.firstname,
-				lastName: user.lastname,
-				displayName: user.username,
-				privilege: 1
-                            });
-			    
-                            new_user_instance.save()
+			    var performer_json = JSON.stringify(performer_instance);
+			    cb(performer_json);
+			} else {			    			    
+                            var new_performer_instance = _Performer.build({
+				name: performer.name,
+				email: performer.email,
+				address: performer.address,
+				contactPerson: performer.contactPerson,
+				performerType: performer.performerType
+			    });
+			    new_performer_instance.save()
 				.success(function() {
-				    var user_json = JSON.stringify(new_user_instance);
-				    cb(user_json);
+				    var performer_json = JSON.stringify(new_performer_instance);
+				    cb(performer_json);
 				})
 				.error(function(err) {
 				    cb(err);
 				});
 			}
                     });
- 	    },
-	    findAccountByEmail: function(user_email, cb) {
-                var _User = this;
-		_User.find(
-                    { where:
-                      { email: user_email }
-                    })
-                    .success(function(user_instance) {
-                        if (user_instance) {
-                            // already exists
-                            var user_json = JSON.stringify(user_instance);
-                            cb(user_json);
-			}
-		    })
-		    .error(function(err) {
-			cb(err);
-		    });
-	    },
-	    findAccountById: function(user_id, cb) {
-                var _User = this;
-                _User.find(
-                    { where:
-                      { id: user_id }
-                    })
-                    .success(function(user_instance) {
-                        if (user_instance) {
-                            // already exists
-                            var user_json = JSON.stringify(user_instance);
-                            cb(user_json);
-                        }
-                    })
-                    .error(function(err) {
-                        cb(err);
-                    });
-            }
+ 	    }
 	},
 	instanceMethods: {
 	    repr: function() {
 		return util.format(
-		    "User <ID: %s Username: %s Email: %s Password: %s FirstName: %s LastName: %s DisplayName: %s Privilege: %s " +
-			"Created: %s Updated:%s", this.id, this.username, this.email,
-		    this.password, this.firstName, this.lastName, this.displayName, this.privilege, this.createdAt, this.updatedAt);
+		    "Performer <ID: %s Name: %s Email: %s Address: %s ContactPerson: %s PerformerType: %s " +
+			"Created: %s Updated:%s", this.id, this.name, this.email,
+		    this.address, this.contactPerson, this.performerType, this.createdAt, this.updatedAt);
 	    }
 	}
     });

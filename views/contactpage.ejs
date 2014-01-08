@@ -19,27 +19,31 @@
     <% include navbar.ejs %>
     
     <div class="container">
-      <h2>Send A Message</h2><hr>
+      <h2>Send Us A Message</h2><hr>
       <div id="contact-form">
-	<form>
-	  <div class="form-alerts"></div>
+	<form action="/send_message" method="post">
+	  <div id="form-alerts">
+            <% if (message) { %>
+            <p><%= message %></p>
+            <% } %>
+          </div>
 	  <div class="form-group ">
 	    <label class="control-label">Your Name:</label>
-	    <input class="form-control" type="text" value="" name="name">
+	    <input class="form-control" type="text" value="" name="form_mail[name]">
 	    <span class="help-block"></span>
 	  </div>
 	  <div class="form-group ">
 	    <label class="control-label">Your Email:</label>
-	    <input class="form-control" type="text" value="" name="email">
+	    <input class="form-control" type="text" value="" name="form_mail[email]">
 	    <span class="help-block"></span>
 	  </div>
 	  <div class="form-group ">
 	    <label class="control-label">Message:</label>
-	    <textarea class="form-control" rows="5" name="message"></textarea>
+	    <textarea class="form-control" rows="5" name="form_mail[message]"></textarea>
 	    <span class="help-block"></span>
 	  </div>
 	  <div class="form-group">
-	    <button class="btn btn-primary btn-contact" type="button">Send Message</button>
+	    <button class="btn btn-primary btn-contact" type="submit">Send Message</button>
 	  </div>
 	</form>
       </div> <!-- end of contact-form -->

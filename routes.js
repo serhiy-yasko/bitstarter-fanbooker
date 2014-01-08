@@ -86,6 +86,17 @@ var agenciesfn = function(request, response) {
 	title: "Promo Agencies",
 	user: request.user,
 	name: Constants.APP_NAME});
+    
+    /*
+    global.db.Agency.bulkCreate([
+	{ name: 'AZH Promo', address: '', phone: '+38 (097) 903-09-28', website: 'http://promo.azh.com.ua/', email: 'promo@azh.com.ua', contactPerson: '' }
+	{ name: 'FIGHT Music', address: '', phone: '+38 (050) 334-90-20', website: 'http://www.fightmusic.com.ua/', email: 'fight@fightmusic.com.ua', contactPerson: '' }
+    ]).success(function() {
+	Agency.findAll().success(function(agencies) {
+            console.log(agencies);
+	})
+    })
+    */
 };
 
 var venuesfn = function(request, response) {
@@ -115,6 +126,7 @@ var contactfn = function(request, response) {
     response.render("contactpage", {
 	title: "Contact",
 	user: request.user,
+	message: request.session.messages,
 	name: Constants.APP_NAME});
 };
 

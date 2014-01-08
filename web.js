@@ -4,6 +4,8 @@ var express = require('express')
   , async   = require('async')
   , passport = require('passport')
   , bcrypt = require('bcrypt-nodejs')
+  , simplesmtp = require('simplesmtp')
+  , nodemailer = require('nodemailer')
   , LocalStrategy = require('passport-local').Strategy
   //, GoogleStrategy = require('passport-google').Strategy
   , db      = require('./models')
@@ -192,6 +194,9 @@ var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('port', process.env.PORT || 8080);
+app.set('trans_email_address', process.env.TRANS_EMAIL_ADDRESS);
+app.set('trans_email_password', process.env.TRANS_EMAIL_PASSWORD);
+app.set('email_address', process.env.EMAIL_ADDRESS);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon.ico')));
 app.use(express.logger("dev"));
@@ -289,12 +294,27 @@ app.post('/sign_in',
 
 app.post('/suggest_event',
 	function(request, response) {
+	    var callback = function(performer_json, err) {
+		if (err) {
+		    console.log(err);
+		    console.log('The performer was not saved');
+		}
+		console.log('The performer was saved');
+	    };
 	    var cb = function(event_json, err) {
 		if (err) {
 		    console.log(err);
-		    console.log('The record was not saved');
+		    console.log('The event was not saved');
 		}
-		console.log('The record was saved');
+		console.log('The event was saved');
+		var new_performer_data = {
+		    name: event_json.performer,
+                    email: '',
+                    address: '',
+                    contactPerson: '',
+                    performerType: ''
+		};
+		global.db.Performer.addPerformer(new_performer_data, callback);
 		return response.redirect('/account');
 	    };
 	    var event_form_data = {
@@ -325,6 +345,28 @@ app.post('/upvote_event',
 	    global.db.Event.incrementVoteCounter(up_event_id, request.user.id, cb);
 });
 
+app.post('/send_message',
+	 function(request, response) {
+	     var smtpTransport = nodemailer.createTransport("SMTP", {
+		 service: "Gmail",
+		 auth: {
+		     user: app.get('trans_email_address'),
+		     pass: app.get('trans_email_password')
+		 }
+	     });
+	     console.log('SMTP Configured');
+	     smtpTransport.sendMail({
+		 from: request.body.form_mail.email,
+		 to: app.get('email_address'),
+		 subject: "[Fanbooker] Message from " + request.body.form_mail.name,
+		 text: request.body.form_mail.message
+	     }, function(err, response) {
+		 if (err) { console.log(err); }
+		 else { console.log("Message sent: " + response.message); }
+	     });
+	     response.redirect('/contact');
+});
+
 app.get('/logout', function(request, response) {
     request.logout();
     response.redirect('/');
@@ -351,6 +393,22 @@ global.db.sequelize.sync().complete(function(err) {
 		http.createServer(app).listen(app.get('port'), function() {
 		    console.log("Listening on " + app.get('port'));
 		});
+
+		/*
+		simplesmtp.createSimpleServer({SMTPBanner:"My Server", debug: true}, function(request) {
+                    process.stdout.write("\r\nNew Mail:\r\n");
+                    request.on("data", function(chunk) {
+                        process.stdout.write(chunk);
+                    });
+                    request.accept();
+                }).listen(25, function(err) {
+                    if(!err) { console.log("SMTP server listening on port 25"); }
+                    else {
+                        console.log("Could not start server on port 25. Ports under 1000 require root privileges.");
+                        console.log(err.message);
+                    }
+                });
+		*/
 
 		// Start a simple daemon to refresh Coinbase orders periodically
 		setInterval(function() {
