@@ -22,7 +22,7 @@
 	"bcrypt-nodejs": "~0.0.3",
 	"nodemailer": "~0.6.0",
 	"simplesmtp": "~0.3.18",
-	"mailparser": "~0.4.0":
+	"mailparser": "~0.4.0"
     },
     "engines": {
 	"node": "0.10.12",
