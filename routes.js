@@ -9,42 +9,6 @@ var build_errfn = function(errmsg, response) {
     };
 };
 
-var venue_objects = [
-    { id: 1,
-      name: 'BINGO Club',
-      address: 'Ukraine, 03115, Kyiv, Prospekt Pobedy 112',
-      phone: '+38 (044) 42-42-555',
-      website: 'http://www.bingo.ua',
-      venueType: 'club' },
-    { id: 2,
-      name: 'DIVAN Restaurant',
-      address: 'Ukraine, 01004, Kyiv, Ploscha Besarabska 2',
-      phone: '+38 (067) 232-64-00',
-      website: 'http://www.festrestdivan.com.ua',
-      venueType: 'restaurant' }
-]
-
-var agency_objects = [
-    { id: 1,
-      name: 'AZH Promo',
-      phone: '+38 (097) 903-09-28',
-      website: 'http://promo.azh.com.ua/',
-      email: 'promo@azh.com.ua' },
-    { id: 2,
-      name: 'FIGHT Music',
-      phone: '+38 (050) 334-90-20',
-      website: 'http://www.fightmusic.com.ua/',
-      email: 'fight@fightmusic.com.ua' }
-]
-
-global.db.Venue.bulkCreate(venue_objects, Object)
-    .success(function() { console.log("Venues are added to the database."); })
-    .error(function(err) { console.log(err); });
-
-global.db.Agency.bulkCreate(agency_objects, Object)
-    .success(function() { console.log("Agencies are added to the database."); })
-    .error(function(err) { console.log(err); });
-
 /*
    Define the routes for the app, i.e. the functions
    which are executed once specific URLs are encountered.
