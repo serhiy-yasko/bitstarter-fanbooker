@@ -167,6 +167,10 @@ p.lead {
 .smallfont {
     font-size: .8em;
 }
+.header-name {
+    font-size: 1.5em;
+    font-weight: bold;
+}
 p {
     font-size: 1.15em;
     line-height: 1.65em;

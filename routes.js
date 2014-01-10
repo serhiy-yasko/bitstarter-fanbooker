@@ -9,6 +9,54 @@ var build_errfn = function(errmsg, response) {
     };
 };
 
+var agency_objects = [
+    { name: 'AZH Promo',
+      phone: '+38 (097) 903-09-28',
+      website: 'http://promo.azh.com.ua/',
+      email: 'promo@azh.com.ua' },
+    { name: 'FIGHT Music',
+      phone: '+38 (050) 334-90-20',
+      website: 'http://www.fightmusic.com.ua/',
+      email: 'fight@fightmusic.com.ua' }
+];
+
+var venue_objects = [
+    { name: 'BINGO Club',
+      address: 'Ukraine, 03115, Kyiv, Prospekt Pobedy 112',
+      phone: '+38 (044) 42-42-555',
+      website: 'http://www.bingo.ua',
+      venueType: 'club' },
+    { name: 'DIVAN Restaurant',
+      address: 'Ukraine, 01004, Kyiv, Ploscha Besarabska 2',
+      phone: '+38 (067) 232-64-00',
+      website: 'http://www.festrestdivan.com.ua',
+      venueType: 'restaurant' }
+];
+
+for (var i = 0; i < agency_objects.length; i++) {
+    var cb = function(agency_json, err) {
+        if (err) {
+            console.log(err);
+            console.log('The agency was not saved');
+        }
+        console.log('The agency was saved');
+    };
+    var agency_object = agency_objects[i];
+    global.db.Agency.addAgency(agency_object, cb);
+}
+
+for (var j = 0; j < venue_objects.length; j++) {
+    var callback = function(venue_json, err) {
+        if (err) {
+            console.log(err);
+            console.log('The venue was not saved');
+        }
+        console.log('The venue was saved');
+    };
+    var venue_object = venue_objects[j];
+    global.db.Venue.addVenue(venue_object, callback);
+}
+
 /*
    Define the routes for the app, i.e. the functions
    which are executed once specific URLs are encountered.
@@ -82,36 +130,26 @@ var eventsfn = function(request, response) {
 };
 
 var agenciesfn = function(request, response) {
-    var successcb = function(agencies_json) {
-	response.render("agenciespage", {
-	    title: "Promo Agencies",
-	    user: request.user,
-	    name: Constants.APP_NAME,
-	    agencies: agencies_json
-	});
-    };
-    var errcb = build_errfn('Error retrieving the list of agencies', response);
-    global.db.Agency.allToJSON(successcb, errcb); 
+    response.render("agenciespage", {
+	title: "Promo Agencies",
+	user: request.user,
+	name: Constants.APP_NAME
+    });    
 };
 
 var venuesfn = function(request, response) {
-    var successcb = function(venues_json) {
-	response.render("venuespage", {
-	    title: "Venues & Clubs",
-	    user: request.user,
-	    name: Constants.APP_NAME,
-	    venues: venues_json
-	});
-    };
-    var errcb = build_errfn('Error retrieving the list of venues', response);
-    global.db.Venue.allToJSON(successcb, errcb);   
+    response.render("venuespage", {
+	title: "Venues & Clubs",
+	user: request.user,
+	name: Constants.APP_NAME
+    });    
 };
 
 var registerfn = function(request, response) {
     response.render("registerpage", {
 	title: "User Registration",
 	user: request.user,
-	message: request.session.messages,
+	message: request.session.massages,
 	name: Constants.APP_NAME});
 };
 
@@ -152,6 +190,24 @@ var api_eventfn = function(request, response) {
     };
     var errcb = build_errfn('Error retrieving API events', response);
     global.db.Event.allToJSON(successcb, errcb);
+};
+
+var api_agenciesfn = function(request, response) {
+    var successcb = function(agencies_json) {
+	var data = agencies_json;
+	response.json(data);
+    };
+    var errcb = build_errfn('Error retrieving API agencies', response);
+    global.db.Agency.allToJSON(successcb, errcb);
+};
+
+var api_venuesfn = function(request, response) {
+    var successcb = function(venues_json) {
+	var data = venues_json;
+	response.json(data);
+    };
+    var errcb = build_errfn('Error retrieving API venues', response);
+    global.db.Venue.allToJSON(successcb, errcb);
 };
 
 var api_orderfn = function(request, response) {
@@ -216,6 +272,8 @@ var ROUTES = define_routes({
     '/account': accountfn,
     '/api/orders': api_orderfn,
     '/api/events': api_eventfn,
+    '/api/agencies': api_agenciesfn,
+    '/api/venues': api_venuesfn,
     '/refresh_orders': refresh_orderfn
 });
 

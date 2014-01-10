@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
     <title><%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://d396qusza40orc.cloudfront.net/startup/code/jquery.js"></script>
     <script src="https://d396qusza40orc.cloudfront.net/startup/code/bootstrap.js"></script>
+    <script src="js/angular.min.js" ></script>
+    <script src="js/controllers.js"></script>
     <script src="js/google-analytics.js"></script>
     <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,300,400,600,700,800" rel="stylesheet" type="text/css">
@@ -20,19 +22,18 @@
     
     <div class="container">
       <h2>Promo Agencies</h2><hr>
-      <div class="span5 copy copy-right">
-	<% for(var i = 0; i < agencies.length; i++) {%>
-	   <h3><%= agencies[i].name %></h3>
-	   <dl class="agency-contact">
-	     <dt><strong>Phone</strong></dt>
-	     <dd><%= agencies[i].phone %></dd>
-	     <dt><strong>Email</strong></dt>
-	     <dd><%= agencies[i].email %></dd>
-	     <dt><strong>Website</strong></dt>
-	     <dd><a href="<%= agencies[i].website %>" target="_blank"><%= agencies[i].website %></a></dd>
-	   </dl>
-        <% } %>
-      </div>
-    </div> 
+      <div class="span5 copy copy-right" ng-controller="AgenciesCtrl" ng-show="!error">
+	<dl ng-repeat="agency in agencies" class="agency-contact">
+	  <dt><strong>Name</strong></dt>
+	  <dd><span class="header-name">{{agency.name}}</span></dd>
+	  <dt><strong>Phone</strong></dt>
+	  <dd>{{agency.phone}}</dd>
+	  <dt><strong>Email</strong></dt>
+	  <dd>{{agency.email}}</dd>
+	  <dt><strong>Website</strong></dt>
+	  <dd><a href="{{agency.website}}" target="_blank">{{agency.website}}</a></dd>
+	</dl>
+      </div> <!-- end of span5 -->
+    </div> <!-- end of container -->
   </body>
 </html>

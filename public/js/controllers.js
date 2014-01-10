@@ -55,3 +55,29 @@ function EventsCtrl($http, $scope) {
 	});
     }
 }
+
+var API_AGENCY_ROUTE = '/api/agencies';
+function AgenciesCtrl($http, $scope) {
+    $http.get(API_AGENCY_ROUTE).success(function(data, status, headers, config) {
+	if (data.error) {
+	    $scope.error = data.error;
+	} else {
+	    $scope.agencies = data;
+	}
+    }).error(function(data, status, headers, config) {
+	$scope.error = "Error fetching agencies.";
+    });  
+}
+
+var API_VENUE_ROUTE = '/api/venues';
+function VenuesCtrl($http, $scope) {
+    $http.get(API_VENUE_ROUTE).success(function(data, status, headers, config) {
+	if (data.error) {
+	    $scope.error = data.error;
+	} else {
+	    $scope.venues = data;
+	}
+    }).error(function(data, status, headers, config) {
+	$scope.error = "Error fetching venues.";
+    });  
+}
