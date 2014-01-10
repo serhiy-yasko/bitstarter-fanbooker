@@ -48,11 +48,11 @@ if (!global.hasOwnProperty('db')) {
         Sequelize: Sequelize,
         sequelize: sq,
         Order: sq.import(__dirname + '/order'),
-	User: sq.import(__dirname + '/users'),
-	Event: sq.import(__dirname + '/events'),
-	Performer: sq.import(__dirname + '/performers'),
-	Agency: sq.import(__dirname + '/agencies'),
-	Venue: sq.import(__dirname + '/venues') 
+	User: sq.import(__dirname + '/user'),
+	Event: sq.import(__dirname + '/event'),
+	Performer: sq.import(__dirname + '/performer'),
+	Agency: sq.import(__dirname + '/agency'),
+	Venue: sq.import(__dirname + '/venue') 
     };
 }
 
