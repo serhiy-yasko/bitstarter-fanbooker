@@ -382,7 +382,57 @@ global.db.sequelize.sync().complete(function(err) {
 	throw err;
     } else {
 	var DB_REFRESH_INTERVAL_SECONDS = 600;
+	var agency_objects = [
+	    { name: 'AZH Promo',
+	      phone: '+38 (097) 903-09-28',
+	      website: 'http://promo.azh.com.ua/',
+	      email: 'promo@azh.com.ua' },
+	    { name: 'FIGHT Music',
+	      phone: '+38 (050) 334-90-20',
+	      website: 'http://www.fightmusic.com.ua/',
+	      email: 'fight@fightmusic.com.ua' }
+	];
+	var venue_objects = [
+	    { name: 'BINGO Club',
+	      address: 'Ukraine, 03115, Kyiv, Prospekt Pobedy 112',
+	      phone: '+38 (044) 42-42-555',
+	      website: 'http://www.bingo.ua',
+	      venueType: 'club' },
+	    { name: 'DIVAN Restaurant',
+	      address: 'Ukraine, 01004, Kyiv, Ploscha Besarabska 2',
+	      phone: '+38 (067) 232-64-00',
+	      website: 'http://www.festrestdivan.com.ua',
+	      venueType: 'restaurant' }
+	];
 	async.series([
+	    function(callback) {
+		for (var i = 0; i < agency_objects.length; i++) {
+		    var cb = function(agency_json, err) {
+			if (err) {
+			    console.log(err);
+			    console.log('The agency was not saved');
+			}
+			console.log('The agency was saved');
+		    };
+		    var agency_object = agency_objects[i];
+		    global.db.Agency.addAgency(agency_object, cb);
+		}
+		callback(null);
+	    },
+	    function(callback) {
+		for (var j = 0; j < venue_objects.length; j++) {
+		    var cb = function(venue_json, err) {
+			if (err) {
+			    console.log(err);
+			    console.log('The venue was not saved');
+			}
+			console.log('The venue was saved');
+		    };
+		    var venue_object = venue_objects[j];
+		    global.db.Venue.addVenue(venue_object, cb);
+		}
+		callback(null);
+	    },
 	    function(cb) {
 		// Mirror the orders before booting up the server
 		console.log("Initial mirror of Coinbase orders at " + new Date());
