@@ -1,4 +1,5 @@
 var uu        = require('underscore')
+  , async     = require('async')
   , db        = require('./models')
   , Constants = require('./constants');
 
@@ -33,29 +34,36 @@ var venue_objects = [
       venueType: 'restaurant' }
 ];
 
-for (var i = 0; i < agency_objects.length; i++) {
-    var cb = function(agency_json, err) {
-        if (err) {
-            console.log(err);
-            console.log('The agency was not saved');
-        }
-        console.log('The agency was saved');
-    };
-    var agency_object = agency_objects[i];
-    global.db.Agency.addAgency(agency_object, cb);
-}
-
-for (var j = 0; j < venue_objects.length; j++) {
-    var callback = function(venue_json, err) {
-        if (err) {
-            console.log(err);
-            console.log('The venue was not saved');
-        }
-        console.log('The venue was saved');
-    };
-    var venue_object = venue_objects[j];
-    global.db.Venue.addVenue(venue_object, callback);
-}
+async.series([
+    function(callback) {
+	for (var i = 0; i < agency_objects.length; i++) {
+	    var cb = function(agency_json, err) {
+		if (err) {
+		    console.log(err);
+		    console.log('The agency was not saved');
+		}
+		console.log('The agency was saved');
+	    };
+	    var agency_object = agency_objects[i];
+	    global.db.Agency.addAgency(agency_object, cb);
+	}
+	callback(null);
+    },
+    function(callback) {
+	for (var j = 0; j < venue_objects.length; j++) {
+	    var cb = function(venue_json, err) {
+		if (err) {
+		    console.log(err);
+		    console.log('The venue was not saved');
+		}
+		console.log('The venue was saved');
+	    };
+	    var venue_object = venue_objects[j];
+	    global.db.Venue.addVenue(venue_object, cb);
+	}
+	callback(null);
+    }
+]);
 
 /*
    Define the routes for the app, i.e. the functions
