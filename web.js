@@ -203,7 +203,6 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 // app.use(express.urlencoded()); 
 // app.use(express.json());
-// app.use(express.bodyParser());
 // app.use(express.methodOverride());
 app.use(express.session({ secret: 'terces' }));
 app.use(passport.initialize());
@@ -227,7 +226,6 @@ app.get('/auth/google',
 // Google will redirect the user to this URL after authentication.
 // Finish the process by verifying the assertion.
 // If valid, the user will be logged in. Otherwise, authentication has failed.
-
 app.get('/auth/google/return', 
 	passport.authenticate('google', { failureRedirect: '/register' }),
 	function(request, response) {
@@ -359,7 +357,7 @@ app.post('/send_message',
 		 from: request.body.form_mail.email,
 		 to: app.get('email_address'),
 		 subject: "[Fanbooker] Message from " + request.body.form_mail.name,
-		 text: request.body.form_mail.message
+		 text: "Sender email: " + request.body.form_mail.email + "\n\n" + request.body.form_mail.message
 	     }, function(err, response) {
 		 if (err) { console.log(err); }
 		 else { console.log("Message sent: " + response.message); }
